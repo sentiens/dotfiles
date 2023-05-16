@@ -30,7 +30,7 @@ require('telescope').setup {
 }
 
 -- Enable telescope fzf native, if installed
-pcall(require('telescope').load_extension, 'fzf')
+pcall(require('telescope').load_extension 'fzf')
 pcall(require("telescope").load_extension "file_browser")
 
 -- [[ Configure Treesitter ]]
@@ -68,7 +68,7 @@ require('nvim-treesitter.configs').setup {
   },
 
   -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
-  auto_install = false,
+  auto_install = true,
 
   highlight = { enable = true },
   indent = { enable = true, disable = { 'python' } },
