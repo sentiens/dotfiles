@@ -81,14 +81,13 @@ require('lazy').setup({
   },
 
   {
-    -- Theme inspired by Atom
-    'navarasu/onedark.nvim',
+    -- theme that uses treesitter for styles
+    'ray-x/aurora',
     priority = 1000,
     config = function()
-      require('onedark').setup {
-        style = 'darker'
-      }
-      vim.cmd.colorscheme 'onedark'
+      vim.g.aurora_italic = 1
+      vim.g.aurora_bold = 1
+      vim.cmd.colorscheme 'aurora'
     end,
   },
   {
