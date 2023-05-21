@@ -348,5 +348,10 @@ require('lazy').setup({
     'echasnovski/mini.comment',
     version = '*',
   },
-  {'akinsho/toggleterm.nvim', version = "*", config = true}
+  { 'akinsho/toggleterm.nvim', version = "*", config = true },
+  {
+    'tzachar/cmp-tabnine',
+    build = './install.sh',
+    dependencies = 'hrsh7th/nvim-cmp',
+  }
 }, {})
