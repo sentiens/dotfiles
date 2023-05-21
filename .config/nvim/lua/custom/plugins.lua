@@ -348,4 +348,5 @@ require('lazy').setup({
     'echasnovski/mini.comment',
     version = '*',
   },
+  {'akinsho/toggleterm.nvim', version = "*", config = true}
 }, {})

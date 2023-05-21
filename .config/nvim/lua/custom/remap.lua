@@ -108,3 +108,5 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = "Open diagn
 
 -- Split line
 vim.api.nvim_set_keymap('n', '<leader>s', ':normal! i<CR><Esc>', { noremap = true, silent = true })
+
+vim.api.nvim_set_keymap('n', '<leader>tt', '<CMD>ToggleTerm<CR>', {noremap = true, silent = true})
