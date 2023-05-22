@@ -28,7 +28,7 @@ require('lazy').setup({
       { 'j-hui/fidget.nvim',       opts = {} },
 
       -- Additional lua configuration, makes nvim stuff amazing!
-      'folke/neodev.nvim',
+      { 'folke/neodev.nvim' },
       {
         "SmiteshP/nvim-navbuddy",
         dependencies = {
@@ -250,19 +250,6 @@ require('lazy').setup({
     "folke/noice.nvim",
     dependencies = { "MunifTanjim/nui.nvim", "rcarriga/nvim-notify" },
     event = "VeryLazy",
-    opts = {
-      lsp = {
-        override = {
-          ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-          ["vim.lsp.util.stylize_markdown"] = true,
-        },
-      },
-      presets = {
-        bottom_search = true,
-        command_palette = true,
-        long_message_to_split = true,
-      },
-    },
     -- stylua: ignore
     keys = {
       {
@@ -357,5 +344,7 @@ require('lazy').setup({
     'tzachar/cmp-tabnine',
     build = './install.sh',
     dependencies = 'hrsh7th/nvim-cmp',
+  },
+  { 'ray-x/lsp_signature.nvim' },
   }
 }, {})

@@ -89,7 +89,7 @@ vim.keymap.set('n', '<leader>ff', require('telescope.builtin').find_files, { des
 
 vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
-vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
+vim.keymap.set('n', '<leader>s/', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 
 -- open file_browser with the path of the current buffer
@@ -107,7 +107,7 @@ vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = "Open float
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
 
 -- Split line
-vim.api.nvim_set_keymap('n', '<A-n>', 'i<CR><Esc>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<A-n>', 'li<CR><Esc>', { noremap = true, silent = true })
 
 
 function _G.set_terminal_keymaps()

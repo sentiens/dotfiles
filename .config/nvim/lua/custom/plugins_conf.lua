@@ -199,7 +199,7 @@ local servers = {
 }
 
 -- Setup neovim lua configuration
-require('neodev').setup()
+require('neodev').setup {}
 
 -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -318,3 +318,7 @@ cmp.setup {
 require('mini.pairs').setup()
 require('mini.surround').setup()
 require('mini.comment').setup()
+
+
+local cfg = {}
+require "lsp_signature".setup(cfg)

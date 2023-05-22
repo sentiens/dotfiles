@@ -1,8 +1,23 @@
 -- Disable deprecation warnings by filtering out specific notifications
 
 -- First setup noice since it overrides notify
-require("noice").setup({})
-
+require("noice").setup {
+  lsp = {
+    -- https://github.com/ray-x/lsp_signature.nvim is better
+    signature = {
+      enabled = false,
+    },
+    override = {
+      ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+      ["vim.lsp.util.stylize_markdown"] = true,
+    },
+  },
+  presets = {
+    bottom_search = true,
+    command_palette = true,
+    long_message_to_split = true,
+  },
+}
 -- Store original notify function
 local orig_notify = require("noice.source.notify").notify
 -- Define a new notify function that filters out certain notifications
