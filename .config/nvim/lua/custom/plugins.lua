@@ -348,18 +348,9 @@ require('lazy').setup({
   { 'ray-x/lsp_signature.nvim' },
   {
     "zbirenbaum/copilot.lua",
-    config = function()
-      require("copilot").setup {
-        suggestion = { enabled = false },
-        panel = { enabled = false }
-      }
-    end
   },
   {
     "zbirenbaum/copilot-cmp",
-    config = function()
-      require("copilot_cmp").setup()
-    end
   },
   {
     "dpayne/CodeGPT.nvim",
@@ -367,8 +358,5 @@ require('lazy').setup({
       'nvim-lua/plenary.nvim',
       'MunifTanjim/nui.nvim',
     },
-    config = function()
-      require("codegpt.config")
-    end
   }
 }, {})

@@ -222,41 +222,13 @@ mason_lspconfig.setup_handlers {
     }
   end,
 }
-
-local tabnine = require('cmp_tabnine.config')
-
-tabnine:setup({
-  max_lines = 1000,
-  max_num_results = 5,
-  sort = true,
-  run_on_every_keystroke = true,
-  snippet_placeholder = '..',
-  ignored_file_types = {
-    -- default is not to ignore
-    -- uncomment to ignore in lua:
-    -- lua = true
-  },
-  show_prediction_strength = true
-})
-
-local prefetch = vim.api.nvim_create_augroup("prefetch", { clear = true })
-
-vim.api.nvim_create_autocmd('BufRead', {
-  group = prefetch,
-  pattern = '*',
-  callback = function()
-    require('cmp_tabnine'):prefetch(vim.fn.expand('%:p'))
-  end
-})
-
-
 -- nvim-cmp setup
 local cmp = require 'cmp'
 local luasnip = require 'luasnip'
 
 luasnip.config.setup {}
 
-local lspkind = require('lspkind')
+local lspkind = require 'lspkind'
 
 require("luasnip.loaders.from_vscode").lazy_load()
 
@@ -328,3 +300,15 @@ require "lsp_signature".setup({
   always_trigger = true,
   doc_lines = 30,
 })
+
+require("toggleterm").setup {
+  size = function(term)
+    if term.direction == "horizontal" then
+      return 25
+    elseif term.direction == "vertical" then
+      return vim.o.columns * 0.4
+    end
+  end,
+}
+
+require("auto-session").setup {}
