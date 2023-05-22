@@ -325,3 +325,5 @@ require("chatgpt").setup {
     "~/.config/nvim/actions.json"
   },
 }
+
+require('nvim-ts-autotag').setup()

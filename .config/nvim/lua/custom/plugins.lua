@@ -347,4 +347,5 @@ require('lazy').setup({
       "nvim-telescope/telescope.nvim"
     }
   },
+  { "windwp/nvim-ts-autotag" }
 }, {})
