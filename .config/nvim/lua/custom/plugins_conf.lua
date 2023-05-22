@@ -320,6 +320,10 @@ require('mini.pairs').setup()
 require('mini.surround').setup()
 require('mini.comment').setup()
 
-
-local cfg = {}
-require "lsp_signature".setup(cfg)
+require "lsp_signature".setup({
+  hint_enable = false,
+  floating_window_off_x = 80,
+  fix_pos = true,
+  always_trigger = true,
+  doc_lines = 30,
+})
