@@ -321,42 +321,30 @@ require('lazy').setup({
         },
         depth_limit = 3,
         depth_limit_indicator = "..",
-
       })
     end
   },
-  {
-    "onsails/lspkind.nvim"
-  },
-  {
-    "echasnovski/mini.pairs",
-  },
-  {
-    'echasnovski/mini.surround',
-    version = '*',
-  },
-  {
-    'echasnovski/mini.comment',
-    version = '*',
-  },
-  { 'akinsho/toggleterm.nvim', version = "*", config = true },
+  { "onsails/lspkind.nvim" },
+  { "echasnovski/mini.pairs" },
+  { 'echasnovski/mini.surround', version = '*' },
+  { 'echasnovski/mini.comment',  version = '*' },
+  { 'akinsho/toggleterm.nvim',   version = "*", config = true },
   {
     'tzachar/cmp-tabnine',
     build = './install.sh',
     dependencies = 'hrsh7th/nvim-cmp',
   },
   { 'ray-x/lsp_signature.nvim' },
+  { "zbirenbaum/copilot.lua" },
+  { "zbirenbaum/copilot-cmp" },
+  { "rmagatti/auto-session" },
   {
-    "zbirenbaum/copilot.lua",
-  },
-  {
-    "zbirenbaum/copilot-cmp",
-  },
-  {
-    "dpayne/CodeGPT.nvim",
+    "jackMort/ChatGPT.nvim",
+    event = "VeryLazy",
     dependencies = {
-      'nvim-lua/plenary.nvim',
-      'MunifTanjim/nui.nvim',
-    },
-  }
+      "MunifTanjim/nui.nvim",
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope.nvim"
+    }
+  },
 }, {})

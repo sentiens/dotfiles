@@ -142,8 +142,9 @@ end
 
 vim.api.nvim_set_keymap("n", "<leader>tg", "<cmd>lua _gitui_toggle()<CR>", { noremap = true, silent = true })
 
-vim.api.nvim_set_keymap("n", "<space>ac", ":Chat<CR>", { noremap = true, desc = "Autocomplete selected code with GPT" })
-vim.api.nvim_set_keymap("n", "<space>ai", ":Chat ", { noremap = true, desc = "Start prompt GPT with selected code" })
-vim.api.nvim_set_keymap("n", "<space>ae", ":Chat explain<CR>", { noremap = true, desc = "Explain selected code" })
-vim.api.nvim_set_keymap("n", "<space>aq", ":Chat question ", { noremap = true, desc = "Question prompt that will be returned to messages buffer" })
-vim.api.nvim_set_keymap("n", "<space>ad", ":Chat debug<CR>", { noremap = true, desc = "Debug selected code" })
+vim.keymap.set({ 'n', 'v' }, '<leader>ac', '<cmd>ChatGPT<CR>', { silent = true })
+vim.keymap.set({ 'n', 'v' }, '<leader>aa', '<cmd>ChatGPTActAs<CR>', { silent = true })
+vim.keymap.set({ 'v' }, '<leader>ae', '<cmd>ChatGPTEditWithInstructions<CR>', { silent = true })
+vim.keymap.set({ 'v', 'n' }, '<leader>ar', ':ChatGPTRun ', { silent = true })
+
+
