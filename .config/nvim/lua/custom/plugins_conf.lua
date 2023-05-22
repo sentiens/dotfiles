@@ -189,6 +189,7 @@ local servers = {
   html = {},
   jsonls = {},
   graphql = {},
+  bashls = {},
 
   lua_ls = {
     Lua = {

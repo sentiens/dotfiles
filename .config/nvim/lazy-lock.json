@@ -1,4 +1,5 @@
 {
+  "CodeGPT.nvim": { "branch": "master", "commit": "6e3714e8d336aea4a205081d44ed8b2e3505dee2" },
   "Comment.nvim": { "branch": "master", "commit": "e1fe53117aab24c378d5e6deaad786789c360123" },
   "LuaSnip": { "branch": "master", "commit": "fcdaa4313305fe20d928551134c1ec2266e7af2a" },
   "aurora": { "branch": "master", "commit": "7a3ea3e6747ddd1acbe898e0b4193213aba36b86" },
