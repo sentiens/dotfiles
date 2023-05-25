@@ -5,5 +5,8 @@
 # Ignore subdirectory and all including directories and files to match pattern as valid for the next pattern
 /.config/*
 !/.config/nvim/
+!/.config/alacritty/
+!/.config/karabiner/
+/.config/karabiner/*
 !/.config/karabiner/karabiner.json
-!/.config/kitty/
+!.tmux.conf
