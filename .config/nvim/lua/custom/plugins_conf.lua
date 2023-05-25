@@ -327,3 +327,4 @@ require("chatgpt").setup {
 }
 
 require('nvim-ts-autotag').setup()
+
