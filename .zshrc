@@ -31,10 +31,10 @@ export ENHANCD_ARG_DOUBLE_DOT="..."
 export ZPLUG_HOME=/usr/local/opt/zplug
 source $ZPLUG_HOME/init.zsh
 zplug "b4b4r07/enhancd", use:init.sh
-zplug "zsh-users/zsh-syntax-highlighting", defer:2
-zplug "zsh-users/zsh-autosuggestions", defer:2
 zplug "mafredri/zsh-async", from:github
 zplug "sindresorhus/pure", use:pure.zsh, from:github, as:theme
+zplug "zsh-users/zsh-syntax-highlighting", defer:2
+zplug "marlonrichert/zsh-autocomplete", defer:2
 
 zplug load
 
