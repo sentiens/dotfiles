@@ -27,6 +27,11 @@ require('telescope').setup {
       hidden = true,
       respect_gitignore = false
     }
+  },
+  pickers = {
+    find_files = {
+      hidden = true,
+    },
   }
 }
 
@@ -315,4 +320,3 @@ require("toggleterm").setup {
 require("auto-session").setup {}
 
 require('nvim-ts-autotag').setup()
-
