@@ -25,7 +25,8 @@ vim.api.nvim_create_autocmd('BufRead', {
 
 require("copilot").setup {
   suggestion = { enabled = true },
-  panel = { enabled = true }
+  panel = { enabled = true },
+  copilot_node_command = 'node',
 }
 
 require("copilot_cmp").setup()

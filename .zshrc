@@ -1,8 +1,5 @@
-# Fig pre block. Keep at the top of this file.
-[[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.pre.zsh"
-
-autoload -Uz compinit
-compinit
+autoload -Uz +X compinit && compinit
+autoload -Uz +X bashcompinit && bashcompinit
 
 source "./.zshrc.private"
 
@@ -34,11 +31,9 @@ zplug "b4b4r07/enhancd", use:init.sh
 zplug "mafredri/zsh-async", from:github
 zplug "sindresorhus/pure", use:pure.zsh, from:github, as:theme
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
-zplug "marlonrichert/zsh-autocomplete", defer:2
-zplug "zsh-users/zsh-autosuggestions", defer:2
+zplug "zsh-users/zsh-autosuggestions"
+zplug "marlonrichert/zsh-autocomplete"
 zplug load
 
+zstyle ':completion:*' menu select
 bindkey -M menuselect '\r' .accept-line
-
-# Fig post block. Keep at the bottom of this file.
-[[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"
