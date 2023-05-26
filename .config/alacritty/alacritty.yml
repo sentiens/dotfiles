@@ -64,32 +64,34 @@ draw_bold_text_with_bright_colors: true
 
 live_config_reload: true
 
-# Colors (Tokyo Night: Storm variant)
-# Source: https://github.com/zatchheems/tokyo-night-alacritty-theme
 colors:
   # Default colors
   primary:
-    background: '0x24283b'
-    foreground: '0xa9b1d6'
+    background: '0x171d23'
+    foreground: '0xffffff'
+
+  # Cursor colors
+  cursor:
+    text:   '0xfafafa'
+    cursor: '0x008b94'
 
   # Normal colors
   normal:
-    black:   '0x32344a'
-    red:     '0xf7768e'
-    green:   '0x9ece6a'
-    yellow:  '0xe0af68'
-    blue:    '0x7aa2f7'
-    magenta: '0xad8ee6'
-    cyan:    '0x449dab'
-    white:   '0x9699a8'
+    black:   '0x333f4a'
+    red:     '0xd95468'
+    green:   '0x8bd49c'
+    blue:    '0x539afc'
+    magenta: '0xb62d65'
+    cyan:    '0x70e1e8'
+    white:   '0xb7c5d3'
 
   # Bright colors
   bright:
-    black:   '0x444b6a'
-    red:     '0xff7a93'
-    green:   '0xb9f27c'
-    yellow:  '0xff9e64'
-    blue:    '0x7da6ff'
-    magenta: '0xbb9af7'
-    cyan:    '0x0db9d7'
-    white:   '0xacb0d0'
+    black:   '0x41505e'
+    red:     '0xd95468'
+    green:   '0x8bd49c'
+    yellow:  '0xebbf83'
+    blue:    '0x5ec4ff'
+    magenta: '0xe27e8d'
+    cyan:    '0x70e1e8'
+    white:   '0xffffff'

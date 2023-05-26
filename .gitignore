@@ -7,6 +7,8 @@
 !/.config/nvim/
 !/.config/alacritty/
 !/.config/karabiner/
+!/.tmuxinator
 /.config/karabiner/*
 !/.config/karabiner/karabiner.json
 !.tmux.conf
+!.zshrc

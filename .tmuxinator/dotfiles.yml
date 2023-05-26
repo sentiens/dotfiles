@@ -1,0 +1,11 @@
+name: dotfiles 
+root: ~/
+
+windows:
+  - zsh:
+  - vim:
+    - nvim
+  - git:
+    - gitui
+  - ai:
+    - aichat
