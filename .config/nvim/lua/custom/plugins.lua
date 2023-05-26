@@ -350,5 +350,6 @@ require('lazy').setup({
   { "windwp/nvim-ts-autotag" },
   { "mg979/vim-visual-multi" },
   { "RRethy/vim-illuminate" },
-  { "sindrets/diffview.nvim" }
+  { "sindrets/diffview.nvim" },
+  { "dhruvasagar/vim-open-url" }
 }, {})
