@@ -24,8 +24,22 @@ vim.api.nvim_create_autocmd('BufRead', {
 })
 
 require("copilot").setup {
-  suggestion = { enabled = false },
-  panel = { enabled = false }
+  suggestion = { enabled = true },
+  panel = { enabled = true }
 }
 
 require("copilot_cmp").setup()
+
+require("chatgpt").setup {
+  openai_params = {
+    model = "gpt-4",
+    max_tokens = 4096,
+  },
+  openai_edit_params = {
+    model = "code-davinci-edit-001",
+  },
+  actions_paths = {
+    "~/.config/nvim/actions.json"
+  },
+}
+

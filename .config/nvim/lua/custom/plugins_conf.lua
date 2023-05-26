@@ -190,6 +190,7 @@ local servers = {
   jsonls = {},
   graphql = {},
   bashls = {},
+  sqlls = {},
 
   lua_ls = {
     Lua = {
@@ -312,19 +313,6 @@ require("toggleterm").setup {
 }
 
 require("auto-session").setup {}
-
-require("chatgpt").setup {
-  openai_params = {
-    model = "gpt-4",
-    max_tokens = 4096,
-  },
-  openai_edit_params = {
-    model = "code-davinci-edit-001",
-  },
-  actions_paths = {
-    "~/.config/nvim/actions.json"
-  },
-}
 
 require('nvim-ts-autotag').setup()
 

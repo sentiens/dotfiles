@@ -17,6 +17,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require('custom/plugins')
+require('custom/ai')
 require('custom/plugins_conf')
 require('custom/behaviour')
 require('custom/remap')

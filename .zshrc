@@ -35,8 +35,10 @@ zplug "mafredri/zsh-async", from:github
 zplug "sindresorhus/pure", use:pure.zsh, from:github, as:theme
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "marlonrichert/zsh-autocomplete", defer:2
-
+zplug "zsh-users/zsh-autosuggestions", defer:2
 zplug load
+
+bindkey -M menuselect '\r' .accept-line
 
 # Fig post block. Keep at the bottom of this file.
 [[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"

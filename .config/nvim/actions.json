@@ -18,7 +18,7 @@
       "template": "Correct this to standard {{lang}}:\n\n{{input}}",
       "strategy": "replace",
       "params": {
-        "model": "gpt-4"
+        "model": "gpt-3.5-turbo"
       }
     },
     "args": {
@@ -53,7 +53,7 @@
       "template": "Extract the main keywords from the following text.\n\n{{input}}",
       "strategy": "replace",
       "params": {
-        "model": "gpt-4",
+        "model": "gpt-3.5-turbo",
         "temperature": 0.5,
         "frequency_penalty": 0.8
       }
@@ -128,7 +128,7 @@
       "template": "Explain the following code:\n\nCode:\n```{{filetype}}\n{{input}}\n```\n\nUse markdown format.\nHere's what the above code is doing:\n```",
       "strategy": "display",
       "params": {
-        "model": "gpt-4",
+        "model": "gpt-3.5-turbo",
         "stop": [
           "```"
         ]
