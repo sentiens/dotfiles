@@ -27,6 +27,7 @@ alias @src='source ~/.zshrc'
 alias @gp='git push'
 alias @gpl='git pull'
 alias @gs='git status'
+alias @ga='git add -i'
 function @gc() {
   git commit -m "$1"
 }

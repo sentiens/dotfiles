@@ -22,8 +22,7 @@ require('custom/plugins_conf')
 require('custom/behaviour')
 require('custom/remap')
 
--- File named noice on purpose to skip warning of the overwritten method
-require('custom/noice')
+require('custom/skipwarn')
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
