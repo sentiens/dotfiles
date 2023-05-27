@@ -8,6 +8,7 @@ shell:
 
 window:
   startup_mode: maximized
+  option_as_alt: Both
 
 scrolling:
   # Maximum number of lines in the scrollback buffer.
@@ -23,7 +24,7 @@ font:
   normal:
     # Font family
     family: "VictorMono Nerd Font"
-    style: Regular
+    style: Medium
 
   # Point size
   size: 14
@@ -95,3 +96,12 @@ colors:
     magenta: '0xe27e8d'
     cyan:    '0x70e1e8'
     white:   '0xffffff'
+key_bindings:
+  -
+    key: Left
+    mods: Alt
+    chars: "\x1bb" # one word left
+  -
+    key: Right
+    mods: Alt
+    chars: "\x1bf" # one word right
