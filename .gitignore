@@ -12,3 +12,6 @@
 !/.config/karabiner/karabiner.json
 !.tmux.conf
 !.zshrc
+
+!/.bin
+

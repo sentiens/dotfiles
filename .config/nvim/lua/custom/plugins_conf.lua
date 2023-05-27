@@ -81,10 +81,10 @@ require('nvim-treesitter.configs').setup {
   incremental_selection = {
     enable = true,
     keymaps = {
-      init_selection = '<C-s>',
-      node_incremental = '<C-s>',
-      scope_incremental = '<C-a>',
-      node_decremental = '<C-f>',
+      init_selection = '<A-s>',
+      node_incremental = '<A-s>',
+      scope_incremental = '<A-a>',
+      node_decremental = '<A-f>',
     },
   },
   textobjects = {
@@ -162,7 +162,7 @@ local on_attach = function(_, bufnr)
 
   -- See `:help K` for why this keymap
   nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
-  nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
+  nmap('<A-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
 
   -- Lesser used LSP functionality
   nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
@@ -259,10 +259,10 @@ cmp.setup {
     end,
   },
   mapping = cmp.mapping.preset.insert {
-    ['<C-n>'] = cmp.mapping.select_next_item(),
-    ['<C-p>'] = cmp.mapping.select_prev_item(),
-    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<A-n>'] = cmp.mapping.select_next_item(),
+    ['<A-p>'] = cmp.mapping.select_prev_item(),
+    ['<A-d>'] = cmp.mapping.scroll_docs(-4),
+    ['<A-f>'] = cmp.mapping.scroll_docs(4),
     ['<A-Space>'] = cmp.mapping.complete {},
     ['<CR>'] = cmp.mapping.confirm {
       behavior = cmp.ConfirmBehavior.Replace,

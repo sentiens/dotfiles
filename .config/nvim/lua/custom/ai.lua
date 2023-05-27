@@ -32,6 +32,16 @@ require("copilot").setup {
 require("copilot_cmp").setup()
 
 require("chatgpt").setup {
+  edit_with_instructions = {
+    diff = true,
+    keymaps = {
+      accept = "<A-y>",
+      toggle_diff = "<A-d>",
+      toggle_settings = "<A-o>",
+      cycle_windows = "<Tab>",
+      use_output_as_input = "<A-i>",
+    },
+  },
   openai_params = {
     model = "gpt-4",
     max_tokens = 4096,
@@ -43,4 +53,3 @@ require("chatgpt").setup {
     "~/.config/nvim/actions.json"
   },
 }
-
