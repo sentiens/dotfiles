@@ -1,150 +1,118 @@
+local set = vim.keymap.set
 -- Keymaps for better default experience
--- See `:help vim.keymap.set()`
-vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
+-- See `:help set()`
+set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
 -- Remap for dealing with word wrap
-vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
-vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
-vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
-vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+set("n", "<C-d>", "<C-d>zz")
+set("n", "<C-u>", "<C-u>zz")
+set("n", "n", "nzzzv")
+set("n", "N", "Nzzzv")
 
-vim.keymap.set("n", "<C-d>", "<C-d>zz")
-vim.keymap.set("n", "<C-u>", "<C-u>zz")
-vim.keymap.set("n", "n", "nzzzv")
-vim.keymap.set("n", "N", "Nzzzv")
+local opts = { noremap = true, silent = true }
+-- Visual-mode commands
+set('v', 'J', ':MoveBlock(1)<CR>', opts)
+set('v', 'K', ':MoveBlock(-1)<CR>', opts)
+set('v', 'H', ':MoveHBlock(-1)<CR>', opts)
+set('v', 'L', ':MoveHBlock(1)<CR>', opts)
 
 -- Replace selection with clipboard
-vim.keymap.set("x", "<leader>p", [["_dP]])
+set("x", "<leader>p", [["_dP]])
 
 -- Just remove without clipboard
-vim.keymap.set({ "n", "v" }, "D", '"_d', { silent = true, noremap = true })
+set({ "n", "v" }, "D", '"_d', { silent = true, noremap = true })
 
-vim.keymap.set("n", "<leader>fc", vim.lsp.buf.format)
+set('n', '<C-q>', ':bd<CR>', { silent = true })
 
-vim.keymap.set('n', '<C-q>', ':bd<CR>', { silent = true })
+-- Split line
+set('n', '<A-n>', 'li<CR><Esc>', { noremap = true, silent = true })
 
-vim.keymap.set("n", "<leader>xx", "<cmd>TroubleToggle<cr>",
-  { silent = true, noremap = true }
-)
-vim.keymap.set("n", "<leader>xw", "<cmd>TroubleToggle workspace_diagnostics<cr>",
-  { silent = true, noremap = true }
-)
-vim.keymap.set("n", "<leader>xd", "<cmd>TroubleToggle document_diagnostics<cr>",
-  { silent = true, noremap = true }
-)
-vim.keymap.set("n", "<leader>xl", "<cmd>TroubleToggle loclist<cr>",
-  { silent = true, noremap = true }
-)
-vim.keymap.set("n", "<leader>xq", "<cmd>TroubleToggle quickfix<cr>",
-  { silent = true, noremap = true }
-)
-vim.keymap.set("n", "gR", "<cmd>TroubleToggle lsp_references<cr>",
-  { silent = true, noremap = true }
-)
 -- For use default preset and it work with dot
-vim.keymap.set('n', '<leader>mt', require('treesj').toggle)
+set('n', '<leader>mt', require('treesj').toggle)
 -- For extending default preset with `recursive = true`, but this doesn't work with dot
-vim.keymap.set(
+set(
   'n',
   '<leader>mT',
-  function() require('treesj').toggle({ split = { recursive = true } }) end
+  function() require('treesj').toggle({ split = { recursive = true } }) end, {
+    desc = 'Modify [T]ree',
+  }
 )
-vim.keymap.set('n', '<leader>S', '<cmd>lua require("spectre").open()<CR>',
+set("n", "<leader>mf", vim.lsp.buf.format, {
+  desc = 'Modify [F]ormat',
+})
+
+set('n', '<leader>Sf', '<cmd>lua require("spectre").open()<CR>',
   {
     desc = "Open Spectre"
   })
-vim.keymap.set('n', '<leader>sw', '<cmd>lua require("spectre").open_visual({select_word=true})<CR>',
+set('n', '<leader>Sw', '<cmd>lua require("spectre").open_visual({select_word=true})<CR>',
   {
     desc = "Search current word"
   })
-vim.keymap.set('v', '<leader>sw', '<esc><cmd>lua require("spectre").open_visual()<CR>',
+set('v', '<leader>Sw', '<esc><cmd>lua require("spectre").open_visual()<CR>',
   {
     desc = "Search current word",
   })
-vim.keymap.set('n', '<leader>sp', '<cmd>lua require("spectre").open_file_search({select_word=true})<CR>',
+set('n', '<leader>Sp', '<cmd>lua require("spectre").open_file_search({select_word=true})<CR>',
   {
     desc = "Search on current file",
   })
--- TODO: Improve o based shortcuts
-vim.keymap.set({ 'n', 'x' }, '<leader>on', '<cmd>Telescope notify<CR>', {
-  desc = "Open notifications"
-})
-
-vim.keymap.set({ 'n', 'x' }, '<leader>O', '<cmd>Navbuddy<CR>')
 
 -- See `:help telescope.builtin`
-vim.keymap.set('n', '<leader>fr', require('telescope.builtin').oldfiles, { desc = '[F]ind [R]ecently opened files' })
-vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = 'Find existing buffers' })
-vim.keymap.set('n', '<leader>/', function()
+set('n', '<leader>fr', require('telescope.builtin').oldfiles, { desc = '[F]ind [R]ecently opened files' })
+set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = 'Find existing buffers' })
+set('n', '<leader>/', function()
   -- You can pass additional configuration to telescope to change theme, layout, etc.
   require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
     winblend = 10,
     previewer = false,
   })
 end, { desc = '[/] Fuzzily search in current buffer' })
-
-vim.keymap.set('n', '<leader>fg', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
-vim.keymap.set('n', '<leader>ff', require('telescope.builtin').find_files, { desc = 'Search [F]iles' })
-
-vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
-vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
-vim.keymap.set('n', '<leader>s/', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
-vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
+set('n', '<leader>fg', require('telescope.builtin').git_files, { desc = '[F]ind [G]it [F]iles' })
+set('n', '<leader>ff', require('telescope.builtin').find_files, { desc = '[F]ind [F]iles' })
+set('n', '<leader>fh', require('telescope.builtin').help_tags, { desc = '[F]find [H]elp' })
+set('n', '<leader>fw', require('telescope.builtin').grep_string, { desc = '[F]find current [W]ord' })
+set('n', '<leader>f/', require('telescope.builtin').live_grep, { desc = '[F]find by grep' })
+set('n', '<leader>fd', require('telescope.builtin').diagnostics, { desc = '[F]find [D]iagnostics' })
 
 -- open file_browser with the path of the current buffer
-vim.api.nvim_set_keymap(
+set(
   "n",
   "<space>fb",
   ":Telescope file_browser path=%:p:h select_buffer=true<CR>",
-  { noremap = true, desc = "Open file browser", }
+  { noremap = true, desc = "Open [F]ile [B]rowser", }
 )
 
 -- Diagnostic keymaps
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic message" })
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = "Go to next diagnostic message" })
-vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = "Open floating diagnostic message" })
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
-
--- Split line
-vim.api.nvim_set_keymap('n', '<A-n>', 'li<CR><Esc>', { noremap = true, silent = true })
-
+set('n', '<leader>dl', vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic message" })
+set('n', '<leader>dh', vim.diagnostic.goto_next, { desc = "Go to next diagnostic message" })
+set('n', '<leader>di', vim.diagnostic.open_float, { desc = "Open floating diagnostic message" })
+set('n', '<leader>da', vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
+set("n", "<leader>dt", "<cmd>TroubleToggle<cr>", { silent = true, noremap = true })
+set("n", "<leader>dw", "<cmd>TroubleToggle workspace_diagnostics<cr>", { silent = true, noremap = true })
+set("n", "<leader>d/", "<cmd>TroubleToggle document_diagnostics<cr>", { silent = true, noremap = true })
+set("n", "<leader>dl", "<cmd>TroubleToggle loclist<cr>", { silent = true, noremap = true })
+set("n", "<leader>df", "<cmd>TroubleToggle quickfix<cr>", { silent = true, noremap = true })
+set("n", "dr", "<cmd>TroubleToggle lsp_references<cr>", { silent = true, noremap = true })
 
 function _G.set_terminal_keymaps()
   local opts = { buffer = 0 }
-  vim.keymap.set('t', '<A-v>', [[<C-\><C-n>]], opts)
-  vim.keymap.set('t', '<C-h>', [[<Cmd>wincmd h<CR>]], opts)
-  vim.keymap.set('t', '<C-j>', [[<Cmd>wincmd j<CR>]], opts)
-  vim.keymap.set('t', '<C-k>', [[<Cmd>wincmd k<CR>]], opts)
-  vim.keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], opts)
-  vim.keymap.set('t', '<C-w>', [[<C-\><C-n><C-w>]], opts)
+  set('t', '<C-v>', [[<C-\><C-n>]], opts)
+  set('t', '<C-h>', [[<Cmd>wincmd h<CR>]], opts)
+  set('t', '<C-j>', [[<Cmd>wincmd j<CR>]], opts)
+  set('t', '<C-k>', [[<Cmd>wincmd k<CR>]], opts)
+  set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], opts)
+  set('t', '<C-w>', [[<C-\><C-n><C-w>]], opts)
 end
 
 -- if you only want these mappings for toggle term use term://*toggleterm#* instead
 vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
-vim.api.nvim_set_keymap('n', '<leader>tt', '<CMD>ToggleTerm<CR>', { noremap = true, silent = true })
+set('n', '<leader>tt', '<CMD>ToggleTerm<CR>', { noremap = true, silent = true })
 
-local Terminal = require('toggleterm.terminal').Terminal
-local gitui    = Terminal:new({
-  cmd = "gitui",
-  hidden = true,
-  direction = "float",
-  dir = "git_dir",
-  on_open = function(term)
-    vim.cmd("startinsert!")
-    vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", { noremap = true, silent = true })
-  end,
-})
-
-function _gitui_toggle()
-  gitui:toggle()
-end
-
-vim.api.nvim_set_keymap("n", "<leader>tg", "<cmd>lua _gitui_toggle()<CR>", { noremap = true, silent = true })
-
-vim.keymap.set({ 'n', 'v' }, '<leader>ac', '<cmd>ChatGPT<CR>', { silent = true })
-vim.keymap.set({ 'n', 'v' }, '<leader>aa', '<cmd>ChatGPTActAs<CR>', { silent = true })
-vim.keymap.set({ 'v' }, '<leader>ae', '<cmd>ChatGPTEditWithInstructions<CR>', { silent = true })
-vim.keymap.set({ 'v', 'n' }, '<leader>ar', ':ChatGPTRun ', { silent = true })
-
-
+set({ 'n', 'v' }, '<leader>ac', '<cmd>ChatGPT<CR>', { silent = true })
+set({ 'n', 'v' }, '<leader>aa', '<cmd>ChatGPTActAs<CR>', { silent = true })
+set({ 'v' }, '<leader>ae', '<cmd>ChatGPTEditWithInstructions<CR>', { silent = true })
+set({ 'v', 'n' }, '<leader>ar', ':ChatGPTRun ', { silent = true })

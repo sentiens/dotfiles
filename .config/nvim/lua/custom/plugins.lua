@@ -64,7 +64,7 @@ require('lazy').setup({
   },
 
   -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim',          opts = {} },
+  { 'folke/which-key.nvim',       opts = {} },
   {
     -- Adds git releated signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
@@ -148,7 +148,7 @@ require('lazy').setup({
   },
 
   -- Fuzzy Finder (files, lsp, etc)
-  { 'nvim-telescope/telescope.nvim', version = '*', dependencies = { 'nvim-lua/plenary.nvim' } },
+  { 'nvim-telescope/telescope.nvim',          version = '*', dependencies = { 'nvim-lua/plenary.nvim' } },
 
   -- Fuzzy Finder Algorithm which requires local dependencies to be built.
   -- Only load if `make` is available. Make sure you have the system
@@ -166,14 +166,12 @@ require('lazy').setup({
   {
     -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
-    dependencies = {
-      'nvim-treesitter/nvim-treesitter-textobjects',
-    },
     build = ":TSUpdate",
   },
   { 'nvim-treesitter/nvim-treesitter-context' },
   { 'folke/trouble.nvim' },
   {
+    -- split/join blocks of code
     'Wansmer/treesj',
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
     config = function()
@@ -327,7 +325,6 @@ require('lazy').setup({
     build = './install.sh',
     dependencies = 'hrsh7th/nvim-cmp',
   },
-  { 'ray-x/lsp_signature.nvim' },
   { "zbirenbaum/copilot.lua" },
   { "zbirenbaum/copilot-cmp" },
   { "rmagatti/auto-session" },
@@ -344,5 +341,9 @@ require('lazy').setup({
   { "mg979/vim-visual-multi" },
   { "RRethy/vim-illuminate" },
   { "sindrets/diffview.nvim" },
-  { "dhruvasagar/vim-open-url" }
+  -- open/search browser
+  { "dhruvasagar/vim-open-url" },
+  -- treesitter based navigation
+  { "drybalka/tree-climber.nvim" },
+  { 'fedepujol/move.nvim' }
 }, {})

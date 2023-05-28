@@ -3,9 +3,8 @@
 -- First setup noice since it overrides notify
 require("noice").setup {
   lsp = {
-    -- https://github.com/ray-x/lsp_signature.nvim is better
     signature = {
-      enabled = false,
+      enabled = true,
     },
     override = {
       ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
