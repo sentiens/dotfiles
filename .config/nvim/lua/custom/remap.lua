@@ -20,7 +20,7 @@ _G.comment_and_todo = function()
   vim.api.nvim_put({ 'TODO: ' }, 'c', true, true)
 end
 
-vim.api.nvim_set_keymap('n', '<leader>gt', '<Cmd>lua _G.comment_and_todo()<CR>',
+set('n', '<leader>gt', '<Cmd>lua _G.comment_and_todo()<CR>',
   { noremap = true, silent = true, desc = 'Comment insert end of line and add TODO' })
 
 -- standard macos keymaps
@@ -174,3 +174,12 @@ set('n', 'g*', [[g*<Cmd>lua require('hlslens').start()<CR>]], kopts)
 set('n', 'g#', [[g#<Cmd>lua require('hlslens').start()<CR>]], kopts)
 
 set('n', '<Leader>l', '<Cmd>noh<CR>', kopts)
+
+local keyopts = { noremap = true, silent = true }
+vim.keymap.set({'n', 'v', 'o'}, '<A-h>', require('tree-climber').goto_parent, keyopts)
+vim.keymap.set({'n', 'v', 'o'}, '<A-l>', require('tree-climber').goto_child, keyopts)
+vim.keymap.set({'n', 'v', 'o'}, '<A-j>', require('tree-climber').goto_next, keyopts)
+vim.keymap.set({'n', 'v', 'o'}, '<A-k>', require('tree-climber').goto_prev, keyopts)
+vim.keymap.set('n', '<A-p>', require('tree-climber').swap_prev, keyopts)
+vim.keymap.set('n', '<A-u>', require('tree-climber').swap_next, keyopts)
+vim.keymap.set('n', '<A-s>', require('tree-climber').highlight_node, keyopts)

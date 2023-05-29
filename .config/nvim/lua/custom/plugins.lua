@@ -351,5 +351,6 @@ require('lazy').setup({
     dependencies = { "nvim-lua/plenary.nvim" },
     opts = {}
   },
-  { 'numToStr/Comment.nvim', }
+  { 'numToStr/Comment.nvim', },
+  { "drybalka/tree-climber.nvim" }
 }, {})
