@@ -21,6 +21,7 @@ require('custom/ai')
 require('custom/plugins_conf')
 require('custom/behaviour')
 require('custom/remap')
+require('custom/commands')
 
 -- File named noice on purpose to skip warning of the overwritten method
 require('custom/noice')

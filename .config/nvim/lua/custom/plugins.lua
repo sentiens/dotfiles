@@ -345,5 +345,11 @@ require('lazy').setup({
   { "dhruvasagar/vim-open-url" },
   -- treesitter based navigation
   { "drybalka/tree-climber.nvim" },
-  { 'fedepujol/move.nvim' }
+  { 'fedepujol/move.nvim' },
+  { 'kevinhwang91/nvim-hlslens' },
+  {
+    "folke/todo-comments.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    opts = {}
+  }
 }, {})

@@ -35,11 +35,11 @@ require("chatgpt").setup {
   edit_with_instructions = {
     diff = true,
     keymaps = {
-      accept = "<A-y>",
-      toggle_diff = "<A-d>",
-      toggle_settings = "<A-o>",
+      accept = "<C-y>",
+      toggle_diff = "<C-d>",
+      toggle_settings = "<C-o>",
       cycle_windows = "<Tab>",
-      use_output_as_input = "<A-i>",
+      use_output_as_input = "<C-i>",
     },
   },
   openai_params = {

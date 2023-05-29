@@ -2,16 +2,24 @@
 !/.gitignore
 
 !/.config/
-# Ignore subdirectory and all including directories and files to match pattern as valid for the next pattern
 /.config/*
 !/.config/nvim/
 !/.config/alacritty/
 !/.config/karabiner/
-!/.tmuxinator
 /.config/karabiner/*
 !/.config/karabiner/karabiner.json
+
+!/.tmuxinator
+
 !.tmux.conf
 !.zshrc
 
 !/.bin
+
+
+!/Library/
+/Library/*
+!/Library/Preferences/
+/Library/Preferences/*
+!/Library/Preferences/com.apple.symbolichotkeys.plist
 

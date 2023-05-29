@@ -12,23 +12,55 @@ set("n", "<C-u>", "<C-u>zz")
 set("n", "n", "nzzzv")
 set("n", "N", "Nzzzv")
 
+-- standard macos keymaps
+set({ 'n', 'v' }, '<Esc>b', 'b', { noremap = true })
+set({ 'n', 'v' }, '<Esc>f', 'w', { noremap = true })
+set('i', '<Esc>b', '<C-o>b', { noremap = true })
+set('i', '<Esc>f', '<C-o>w', { noremap = true })
+
+set({ 'n', 'v' }, '<C-a>', '0', { noremap = true })
+set({ 'n', 'v' }, '<C-e>', '$', { noremap = true })
+set('i', '<C-a>', '<C-o>0', { noremap = true })
+set('i', '<C-e>', '<C-o>$', { noremap = true })
+set({ 'n', 'v' }, "<Esc><", "gg", { noremap = true })
+set({ 'n', 'v' }, "<Esc>>", "G", { noremap = true })
+set('i', '<Esc><', '<C-o>gg', { noremap = true })
+set('i', '<Esc>>', '<C-o>G', { noremap = true })
+
+set("n", "<Esc>a", "ggVG", { noremap = true })
+set("i", "<Esc>a", "<Esc>ggVG", { noremap = true })
+set("x", "<Esc>a", "<Esc>ggVG", { noremap = true })
+
+set("n", "<Esc>y", "yy", { noremap = true })
+set("x", "<Esc>y", "y", { noremap = true })
+
+set("n", "<Esc>z", "u", { noremap = true })
+set("i", "<Esc>z", "<Esc>u", { noremap = true })
+set("i", "<C-r>", "<C-o><C-r>", { noremap = true })
+set("x", "<Esc>z", "<Esc>u", { noremap = true })
+set("x", "<C-r>", "<Esc><C-r>", { noremap = true })
+
+-- select pasted content
+set("n", "yp", "`[v`]", { noremap = true })
+
+-- move things around
 local opts = { noremap = true, silent = true }
--- Visual-mode commands
 set('v', 'J', ':MoveBlock(1)<CR>', opts)
 set('v', 'K', ':MoveBlock(-1)<CR>', opts)
 set('v', 'H', ':MoveHBlock(-1)<CR>', opts)
 set('v', 'L', ':MoveHBlock(1)<CR>', opts)
+set('v', '<leader>J', 'y`]P`[v`]:MoveBlock(1)<CR>', { noremap = true, silent = true })
+set('v', '<leader>K', 'y`[p`[v`]:MoveBlock(-1)<CR>', { noremap = true, silent = true })
+set('v', '<leader>H', 'y`[P`[v`]:MoveHBlock(-1)<CR>', { noremap = true, silent = true })
+set('v', '<leader>L', 'y`]P`[v`]:MoveHBlock(1)<CR>', { noremap = true, silent = true })
 
--- Replace selection with clipboard
 set("x", "<leader>p", [["_dP]])
-
 -- Just remove without clipboard
 set({ "n", "v" }, "D", '"_d', { silent = true, noremap = true })
 
 set('n', '<C-q>', ':bd<CR>', { silent = true })
-
--- Split line
-set('n', '<A-n>', 'li<CR><Esc>', { noremap = true, silent = true })
+set('v', 'p', '"_dp', { noremap = true, silent = true })
+set('v', '<C-x>', 'd', { noremap = true })
 
 -- For use default preset and it work with dot
 set('n', '<leader>mt', require('treesj').toggle)
@@ -116,3 +148,18 @@ set({ 'n', 'v' }, '<leader>ac', '<cmd>ChatGPT<CR>', { silent = true })
 set({ 'n', 'v' }, '<leader>aa', '<cmd>ChatGPTActAs<CR>', { silent = true })
 set({ 'v' }, '<leader>ae', '<cmd>ChatGPTEditWithInstructions<CR>', { silent = true })
 set({ 'v', 'n' }, '<leader>ar', ':ChatGPTRun ', { silent = true })
+
+local kopts = { noremap = true, silent = true }
+
+set('n', 'n',
+  [[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]],
+  kopts)
+set('n', 'N',
+  [[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]],
+  kopts)
+set('n', '*', [[*<Cmd>lua require('hlslens').start()<CR>]], kopts)
+set('n', '#', [[#<Cmd>lua require('hlslens').start()<CR>]], kopts)
+set('n', 'g*', [[g*<Cmd>lua require('hlslens').start()<CR>]], kopts)
+set('n', 'g#', [[g#<Cmd>lua require('hlslens').start()<CR>]], kopts)
+
+set('n', '<Leader>l', '<Cmd>noh<CR>', kopts)

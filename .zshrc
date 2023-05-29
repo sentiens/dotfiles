@@ -1,3 +1,4 @@
+bindkey -e
 autoload -Uz +X compinit && compinit
 autoload -Uz +X bashcompinit && bashcompinit
 

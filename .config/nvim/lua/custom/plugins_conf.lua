@@ -81,10 +81,10 @@ require('nvim-treesitter.configs').setup {
   incremental_selection = {
     enable = true,
     keymaps = {
-      init_selection = '<A-s>',
-      node_incremental = '<A-s>',
-      scope_incremental = '<A-a>',
-      node_decremental = '<A-f>',
+      init_selection = '<C-s>',
+      node_incremental = '<C-s>',
+      scope_incremental = '<C-a>',
+      node_decremental = '<C-f>',
     },
   },
 }
@@ -120,8 +120,8 @@ local on_attach = function(_, bufnr)
   nmap('<leader>gs', require('telescope.builtin').lsp_dynamic_workspace_symbols, 'Workspace(global) [S]ymbols')
 
   -- See `:help K` for why this keymap
-  nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
-  nmap('<A-k>', vim.lsp.buf.signature_help, 'Signature Documentation', true)
+  nmap('<C-j>', vim.lsp.buf.hover, 'Hover Documentation')
+  nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation', true)
 
   -- Lesser used LSP functionality
   nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
@@ -218,11 +218,11 @@ cmp.setup {
     end,
   },
   mapping = cmp.mapping.preset.insert {
-    ['<A-n>'] = cmp.mapping.select_next_item(),
-    ['<A-p>'] = cmp.mapping.select_prev_item(),
-    ['<A-d>'] = cmp.mapping.scroll_docs(-4),
-    ['<A-f>'] = cmp.mapping.scroll_docs(4),
-    ['<A-Space>'] = cmp.mapping.complete {},
+    ['<C-n>'] = cmp.mapping.select_next_item(),
+    ['<C-p>'] = cmp.mapping.select_prev_item(),
+    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete {},
     ['<CR>'] = cmp.mapping.confirm {
       behavior = cmp.ConfirmBehavior.Replace,
       select = true,
@@ -271,3 +271,5 @@ require("toggleterm").setup {
 require("auto-session").setup {}
 
 require('nvim-ts-autotag').setup()
+
+require('hlslens').setup()

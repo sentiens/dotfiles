@@ -169,6 +169,54 @@
                         ]
                     },
                     {
+                        "description": "Alacritty: Change left_command to left_option",
+                        "manipulators": [
+                            {
+                                "type": "basic",
+                                "from": {
+                                    "key_code": "left_option"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "left_control"
+                                    }
+                                ],
+                                "conditions": [
+                                    {
+                                        "type": "frontmost_application_if",
+                                        "bundle_identifiers": [
+                                            "^org\\.alacritty$"
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "description": "Alacritty: Change left_option to left_command",
+                        "manipulators": [
+                            {
+                                "type": "basic",
+                                "from": {
+                                    "key_code": "left_control"
+                                },
+                                "to": [
+                                    {
+                                        "key_code": "left_option"
+                                    }
+                                ],
+                                "conditions": [
+                                    {
+                                        "type": "frontmost_application_if",
+                                        "bundle_identifiers": [
+                                            "^org\\.alacritty$"
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
                         "description": "Apps",
                         "manipulators": [
                             {
@@ -176,9 +224,8 @@
                                     "key_code": "v",
                                     "modifiers": {
                                         "mandatory": [
-                                            "left_option",
-                                            "left_control",
-                                            "left_shift"
+                                            "right_option",
+                                            "right_shift"
                                         ]
                                     }
                                 },
@@ -188,14 +235,14 @@
                                     }
                                 ],
                                 "type": "basic"
-                            },{
+                            },
+                            {
                                 "from": {
                                     "key_code": "b",
                                     "modifiers": {
                                         "mandatory": [
-                                            "left_option",
-                                            "left_control",
-                                            "left_shift"
+                                            "right_option",
+                                            "right_shift"
                                         ]
                                     }
                                 },
@@ -205,14 +252,14 @@
                                     }
                                 ],
                                 "type": "basic"
-                            },{
+                            },
+                            {
                                 "from": {
                                     "key_code": "s",
                                     "modifiers": {
                                         "mandatory": [
-                                            "left_option",
-                                            "left_control",
-                                            "left_shift"
+                                            "right_option",
+                                            "right_shift"
                                         ]
                                     }
                                 },
@@ -222,14 +269,14 @@
                                     }
                                 ],
                                 "type": "basic"
-                            },{
+                            },
+                            {
                                 "from": {
                                     "key_code": "m",
                                     "modifiers": {
                                         "mandatory": [
-                                            "left_option",
-                                            "left_control",
-                                            "left_shift"
+                                            "right_option",
+                                            "right_shift"
                                         ]
                                     }
                                 },
@@ -239,14 +286,14 @@
                                     }
                                 ],
                                 "type": "basic"
-                            },{
+                            },
+                            {
                                 "from": {
                                     "key_code": "t",
                                     "modifiers": {
                                         "mandatory": [
-                                            "left_option",
-                                            "left_control",
-                                            "left_shift"
+                                            "right_option",
+                                            "right_shift"
                                         ]
                                     }
                                 },
@@ -256,14 +303,14 @@
                                     }
                                 ],
                                 "type": "basic"
-                            },{
+                            },
+                            {
                                 "from": {
                                     "key_code": "c",
                                     "modifiers": {
                                         "mandatory": [
-                                            "left_option",
-                                            "left_control",
-                                            "left_shift"
+                                            "right_option",
+                                            "right_shift"
                                         ]
                                     }
                                 },
