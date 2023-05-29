@@ -352,5 +352,15 @@ require('lazy').setup({
     opts = {}
   },
   { 'numToStr/Comment.nvim', },
-  { "drybalka/tree-climber.nvim" }
+  { "drybalka/tree-climber.nvim" },
+  { "johmsalas/text-case.nvim" },
+  {
+    "rcarriga/nvim-dap-ui",
+    dependencies = {
+      "mfussenegger/nvim-dap",
+      "jay-babu/mason-nvim-dap.nvim",
+      "nvim-telescope/telescope-dap.nvim",
+      "theHamsta/nvim-dap-virtual-text",
+    },
+  },
 }, {})

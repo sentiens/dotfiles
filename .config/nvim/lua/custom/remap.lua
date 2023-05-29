@@ -176,10 +176,36 @@ set('n', 'g#', [[g#<Cmd>lua require('hlslens').start()<CR>]], kopts)
 set('n', '<Leader>l', '<Cmd>noh<CR>', kopts)
 
 local keyopts = { noremap = true, silent = true }
-vim.keymap.set({'n', 'v', 'o'}, '<A-h>', require('tree-climber').goto_parent, keyopts)
-vim.keymap.set({'n', 'v', 'o'}, '<A-l>', require('tree-climber').goto_child, keyopts)
-vim.keymap.set({'n', 'v', 'o'}, '<A-j>', require('tree-climber').goto_next, keyopts)
-vim.keymap.set({'n', 'v', 'o'}, '<A-k>', require('tree-climber').goto_prev, keyopts)
-vim.keymap.set('n', '<A-p>', require('tree-climber').swap_prev, keyopts)
-vim.keymap.set('n', '<A-u>', require('tree-climber').swap_next, keyopts)
-vim.keymap.set('n', '<A-s>', require('tree-climber').highlight_node, keyopts)
+set({ 'n', 'v', 'o' }, '<A-h>', require('tree-climber').goto_parent, keyopts)
+set({ 'n', 'v', 'o' }, '<A-l>', require('tree-climber').goto_child, keyopts)
+set({ 'n', 'v', 'o' }, '<A-j>', require('tree-climber').goto_next, keyopts)
+set({ 'n', 'v', 'o' }, '<A-k>', require('tree-climber').goto_prev, keyopts)
+set('n', '<A-p>', require('tree-climber').swap_prev, keyopts)
+set('n', '<A-u>', require('tree-climber').swap_next, keyopts)
+set('n', '<A-s>', require('tree-climber').highlight_node, keyopts)
+
+set('n', 'ga.', '<cmd>TextCaseOpenTelescope<CR>', { desc = "Telescope" })
+set('v', 'ga.', "<cmd>TextCaseOpenTelescope<CR>", { desc = "Telescope" })
+
+set('n', '<leader>dec', '<cmd>lua require"dap".continue()<CR>', { desc = "Debug: continue" })
+set('n', '<leader>deo', '<cmd>lua require"dap".step_over()<CR>', { desc = "Debug: Step over" })
+set('n', '<leader>dei', '<cmd>lua require"dap".step_into()<CR>', { desc = "Debug: Step into" })
+set('n', '<leader>deu', '<cmd>lua require"dap".step_out()<CR>', { desc = "Debug: Step out" })
+set("n", "<Leader>dee", "<CMD>lua require('dapui').eval()<CR>", { desc = "Debug: Step out" })
+set('n', '<leader>deb', '<cmd>lua require"dap".toggle_breakpoint()<CR>', { desc = "Debug: Toggle breakpoint" })
+set('n', '<leader>def', '<cmd>lua require"dap".set_breakpoint(vim.fn.input("Breakpoint condition: "))<CR>',
+  { desc = "Debug: Breakpoint condition" })
+set('n', '<leader>dem', '<cmd>lua require"dap".set_breakpoint(nil, nil, vim.fn.input("Log point message: "))<CR>',
+  { desc = "Debug: Breakpoint message" })
+set('n', '<leader>der', '<cmd>lua require"dap".repl.open()<CR>', { desc = "Debug: Repl" })
+set('n', '<leader>del', '<cmd>lua require"dap".repl.run_last()<CR>', { desc = "Debug: Repl run last" })
+set('n', '<leader>dec', '<cmd>lua require"dap".terminate()<CR>', { desc = "Debug: Terminate" })
+set('n', '<leader>deq', '<cmd>lua require"dap".close()<CR>', { desc = "Debug: close" })
+
+-- telescope-dap
+set('n', '<leader>detc', '<cmd>lua require"telescope".extensions.dap.commands{}<CR>', { desc = "Debug: Commands" })
+set('n', '<leader>deto', '<cmd>lua require"telescope".extensions.dap.configurations{}<CR>', { desc = "Debug: Configs" })
+set('n', '<leader>detb', '<cmd>lua require"telescope".extensions.dap.list_breakpoints{}<CR>',
+  { desc = "Debug: Breakpoints" })
+set('n', '<leader>detv', '<cmd>lua require"telescope".extensions.dap.variables{}<CR>', { desc = "Debug: Variables" })
+set('n', '<leader>detf', '<cmd>lua require"telescope".extensions.dap.frames{}<CR>', { desc = "Debug: Frames" })

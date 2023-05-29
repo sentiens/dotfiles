@@ -36,8 +36,12 @@ require('telescope').setup {
 }
 
 -- Enable telescope fzf native, if installed
-pcall(require('telescope').load_extension 'fzf')
-pcall(require("telescope").load_extension "file_browser")
+pcall(require('telescope').load_extension, 'fzf')
+pcall(require("telescope").load_extension, "file_browser")
+pcall(require('telescope').load_extension, 'dap')
+
+require('textcase').setup {}
+pcall(require('telescope').load_extension, 'textcase')
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
@@ -89,9 +93,10 @@ require('nvim-treesitter.configs').setup {
   },
 }
 
+local faugroup = vim.api.nvim_create_augroup("LspFormatting", {})
 -- LSP settings.
 --  This function gets run when an LSP connects to a particular buffer.
-local on_attach = function(_, bufnr)
+local on_attach = function(client, bufnr)
   -- NOTE: Remember that lua is a real programming language, and as such it is possible
   -- to define small helper and utility functions so you don't have to repeat yourself
   -- many times.
@@ -103,7 +108,7 @@ local on_attach = function(_, bufnr)
       desc = 'LSP: ' .. desc
     end
 
-    vim.keymap.set({'n', 'v'}, keys, func, { buffer = bufnr, desc = desc })
+    vim.keymap.set({ 'n', 'v' }, keys, func, { buffer = bufnr, desc = desc })
     if i then
       vim.keymap.set('i', keys, func, { buffer = bufnr, desc = desc })
     end
@@ -131,10 +136,16 @@ local on_attach = function(_, bufnr)
     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
   end, '[W]orkspace [L]ist Folders')
 
-  -- Create a command `:Format` local to the LSP buffer
-  vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
-    vim.lsp.buf.format()
-  end, { desc = 'Format current buffer with LSP' })
+  if client.supports_method("textDocument/formatting") then
+    vim.api.nvim_clear_autocmds({ group = faugroup, buffer = bufnr })
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      group = faugroup,
+      buffer = bufnr,
+      callback = function()
+        vim.lsp.buf.format()
+      end,
+    })
+  end
 end
 
 -- Enable the following language servers
@@ -165,11 +176,9 @@ local servers = {
 }
 
 -- Setup neovim lua configuration
-require('neodev').setup {}
-
--- nvim-cmp supports additional completion capabilities, so broadcast that to servers
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+require('neodev').setup {
+  library = { plugins = { "nvim-dap-ui" }, types = true },
+}
 
 -- Ensure the servers above are installed
 local mason_lspconfig = require 'mason-lspconfig'
@@ -187,6 +196,106 @@ mason_lspconfig.setup_handlers {
     }
   end,
 }
+
+require("mason-nvim-dap").setup({
+  ensure_installed = {
+    "chrome-debug-adapter",
+    "node-debug2-adapter",
+    "delve",
+    "php-debug-adapter",
+  },
+  automatic_installation = true
+})
+
+vim.fn.sign_define("DapBreakpoint", { text = "🟥", texthl = "", linehl = "", numhl = "" })
+vim.fn.sign_define("DapStopped", { text = "⭐️", texthl = "", linehl = "", numhl = "" })
+
+local dap, dapui = require("dap"), require("dapui")
+dapui.setup()
+dap.set_log_level("INFO")
+dap.listeners.after.event_initialized["dapui_config"] = function()
+  dapui.open()
+end
+dap.listeners.before.event_terminated["dapui_config"] = function()
+  dapui.close()
+end
+dap.listeners.before.event_exited["dapui_config"] = function()
+  dapui.close()
+end
+
+dap.configurations.go = {
+  {
+    type = "go",         -- Which adapter to use
+    name = "Debug",      -- Human readable name
+    request = "launch",  -- Whether to "launch" or "attach" to program
+    program = "${file}", -- The buffer you are focused on when running nvim-dap
+  },
+}
+
+dap.adapters.go = {
+  type = "server",
+  port = "${port}",
+  executable = {
+    command = vim.fn.stdpath("data") .. '/mason/bin/dlv',
+    args = { "dap", "-l", "127.0.0.1:${port}" },
+  },
+}
+
+dap.configurations.php = {
+  {
+    type = "php",
+    request = "launch",
+    name = "Listen for Xdebug",
+    port = 9003,
+    pathMappings = {
+      ["/var/www/html"] = "${workspaceFolder}"
+    }
+  }
+}
+
+dap.adapters.php = {
+  type = "executable",
+  command = "node",
+  args = { vim.fn.stdpath("data") .. "/mason/packages/php-debug-adapter/extension/out/vscode-php-debug/out/phpDebug.js" }
+}
+
+dap.configurations = {
+  javascript = {
+    {
+      type = 'node2',
+      name = 'Launch',
+      request = 'launch',
+      program = '${file}',
+      cwd = vim.fn.getcwd(),
+      sourceMaps = true,
+      protocol = 'inspector',
+      console = 'integratedTerminal',
+    },
+    {
+      type = 'node2',
+      name = 'Attach',
+      request = 'attach',
+      program = '${file}',
+      cwd = vim.fn.getcwd(),
+      sourceMaps = true,
+      protocol = 'inspector',
+      console = 'integratedTerminal',
+    },
+  }
+}
+
+dap.adapters.node2 = {
+  type = 'executable',
+  command = 'node',
+  args = { vim.fn.stdpath("data") .. '/mason/packages/node-debug2-adapter/out/src/nodeDebug.js' },
+}
+
+require("nvim-dap-virtual-text").setup()
+
+-- nvim-cmp supports additional completion capabilities, so broadcast that to servers
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+
 -- nvim-cmp setup
 local cmp = require 'cmp'
 local luasnip = require 'luasnip'
