@@ -256,7 +256,6 @@ cmp.setup {
 
 require('mini.pairs').setup()
 require('mini.surround').setup()
-require('mini.comment').setup()
 
 require("toggleterm").setup {
   size = function(term)
@@ -273,3 +272,5 @@ require("auto-session").setup {}
 require('nvim-ts-autotag').setup()
 
 require('hlslens').setup()
+
+require('Comment').setup()

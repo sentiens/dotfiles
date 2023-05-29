@@ -318,7 +318,6 @@ require('lazy').setup({
   { "onsails/lspkind.nvim" },
   { "echasnovski/mini.pairs" },
   { 'echasnovski/mini.surround', version = '*' },
-  { 'echasnovski/mini.comment',  version = '*' },
   { 'akinsho/toggleterm.nvim',   version = "*", config = true },
   {
     'tzachar/cmp-tabnine',
@@ -351,5 +350,6 @@ require('lazy').setup({
     "folke/todo-comments.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
     opts = {}
-  }
+  },
+  { 'numToStr/Comment.nvim', }
 }, {})

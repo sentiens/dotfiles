@@ -12,6 +12,17 @@ set("n", "<C-u>", "<C-u>zz")
 set("n", "n", "nzzzv")
 set("n", "N", "Nzzzv")
 
+local capi = require('Comment.api')
+
+_G.comment_and_todo = function()
+  capi.locked('insert.linewise.eol')("char")
+  -- Insert TODO after inserting the comment
+  vim.api.nvim_put({ 'TODO: ' }, 'c', true, true)
+end
+
+vim.api.nvim_set_keymap('n', '<leader>gt', '<Cmd>lua _G.comment_and_todo()<CR>',
+  { noremap = true, silent = true, desc = 'Comment insert end of line and add TODO' })
+
 -- standard macos keymaps
 set({ 'n', 'v' }, '<Esc>b', 'b', { noremap = true })
 set({ 'n', 'v' }, '<Esc>f', 'w', { noremap = true })
