@@ -43,13 +43,33 @@ require('lazy').setup({
           navbuddy.setup {
             lsp = {
               auto_attach = true
+            },
+            window = {
+              position = "70%",
+              size = "40%",
+              sections = {
+                left = {
+                  size = "20%",
+                  border = nil, -- You can set border style for each section individually as well.
+                },
+                mid = {
+                  size = "30%",
+                  border = nil,
+                },
+                right = {
+                  -- No size option for right most section. It fills to
+                  -- remaining area.
+                  border = nil,
+                  preview = "leaf", -- Right section can show previews too.
+                  -- Options: "leaf", "always" or "never"
+                }
+              },
             }
           }
         end
       }
     },
   },
-
   {
     -- Autocompletion
     'hrsh7th/nvim-cmp',
@@ -62,7 +82,6 @@ require('lazy').setup({
       "rafamadriz/friendly-snippets"
     },
   },
-
   -- Useful plugin to show you pending keybinds.
   { 'folke/which-key.nvim',       opts = {} },
   {
@@ -79,15 +98,11 @@ require('lazy').setup({
       },
     },
   },
-
   {
-    -- theme that uses treesitter for styles
-    'ray-x/aurora',
-    priority = 1000,
+    "olimorris/onedarkpro.nvim",
+    priority = 1000, -- Ensure it loads first
     config = function()
-      vim.g.aurora_italic = 1
-      vim.g.aurora_bold = 1
-      vim.cmd.colorscheme 'aurora'
+      vim.cmd.colorscheme 'onedark'
     end,
   },
   {
@@ -95,7 +110,6 @@ require('lazy').setup({
     dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
   },
   { 'nvim-tree/nvim-web-devicons' },
-
   {
     -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',
@@ -317,8 +331,15 @@ require('lazy').setup({
   },
   { "onsails/lspkind.nvim" },
   { "echasnovski/mini.pairs" },
-  { 'echasnovski/mini.surround', version = '*' },
-  { 'akinsho/toggleterm.nvim',   version = "*", config = true },
+  {
+    "kylechui/nvim-surround",
+    version = "*", -- Use for stability; omit to use `main` branch for the latest features
+    event = "VeryLazy",
+    config = function()
+      require("nvim-surround").setup {}
+    end
+  },
+  { 'akinsho/toggleterm.nvim', version = "*", config = true },
   {
     'tzachar/cmp-tabnine',
     build = './install.sh',

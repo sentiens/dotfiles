@@ -97,7 +97,7 @@ set('n', '<leader>Sw', '<cmd>lua require("spectre").open_visual({select_word=tru
   })
 set('v', '<leader>Sw', '<esc><cmd>lua require("spectre").open_visual()<CR>',
   {
-    desc = "Search current word",
+    desc = "Search current selection",
   })
 set('n', '<leader>Sp', '<cmd>lua require("spectre").open_file_search({select_word=true})<CR>',
   {
@@ -105,22 +105,21 @@ set('n', '<leader>Sp', '<cmd>lua require("spectre").open_file_search({select_wor
   })
 
 -- See `:help telescope.builtin`
-set('n', '<leader>fr', require('telescope.builtin').oldfiles, { desc = '[F]ind [R]ecently opened files' })
-set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = 'Find existing buffers' })
-set('n', '<leader>/', function()
+set('n', '<leader>b', require('telescope.builtin').buffers, { desc = 'Find existing buffers' })
+set('n', '<leader>/f', function()
   -- You can pass additional configuration to telescope to change theme, layout, etc.
   require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
     winblend = 10,
     previewer = false,
   })
 end, { desc = '[/] Fuzzily search in current buffer' })
+set('n', '<leader>fr', require('telescope.builtin').oldfiles, { desc = '[F]ind [R]ecently opened files' })
 set('n', '<leader>fg', require('telescope.builtin').git_files, { desc = '[F]ind [G]it [F]iles' })
 set('n', '<leader>ff', require('telescope.builtin').find_files, { desc = '[F]ind [F]iles' })
 set('n', '<leader>fh', require('telescope.builtin').help_tags, { desc = '[F]find [H]elp' })
 set('n', '<leader>fw', require('telescope.builtin').grep_string, { desc = '[F]find current [W]ord' })
 set('n', '<leader>f/', require('telescope.builtin').live_grep, { desc = '[F]find by grep' })
 set('n', '<leader>fd', require('telescope.builtin').diagnostics, { desc = '[F]find [D]iagnostics' })
-
 -- open file_browser with the path of the current buffer
 set(
   "n",
@@ -184,8 +183,9 @@ set('n', '<A-p>', require('tree-climber').swap_prev, keyopts)
 set('n', '<A-u>', require('tree-climber').swap_next, keyopts)
 set('n', '<A-s>', require('tree-climber').highlight_node, keyopts)
 
-set('n', 'ga.', '<cmd>TextCaseOpenTelescope<CR>', { desc = "Telescope" })
-set('v', 'ga.', "<cmd>TextCaseOpenTelescope<CR>", { desc = "Telescope" })
+set('n', '<leader><space>', require("nvim-navbuddy").open, { desc = "Syntax three navigation" })
+
+set({ 'n', 'v' }, '<leader>ma', '<cmd>TextCaseOpenTelescope<CR>', { desc = "Telescope" })
 
 set('n', '<leader>dec', '<cmd>lua require"dap".continue()<CR>', { desc = "Debug: continue" })
 set('n', '<leader>deo', '<cmd>lua require"dap".step_over()<CR>', { desc = "Debug: Step over" })
