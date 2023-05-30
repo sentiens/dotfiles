@@ -60,6 +60,7 @@ font:
     # The `style` can be specified to pick a specific face.
     style: Bold Italic
 
+
 # If `true`, bold text is drawn using the bright color variants.
 draw_bold_text_with_bright_colors: true
 
@@ -119,5 +120,5 @@ key_bindings:
   - { key: Key7,     mods: Command,       chars: "\x02\x37" }
   - { key: Key8,     mods: Command,       chars: "\x02\x38" }
   - { key: Key9,     mods: Command,       chars: "\x02\x39" }
-  - { key: RBracket, mods: Command|Shift, chars: "\x09" } # this represents Ctrl+i
-  - { key: LBracket, mods: Command|Shift, chars: "\x0f" } # this represents Ctrl+o
+  - { key: RBracket, mods: Command, chars: "\x09" } # this represents Ctrl+i
+  - { key: LBracket, mods: Command, chars: "\x0f" } # this represents Ctrl+o

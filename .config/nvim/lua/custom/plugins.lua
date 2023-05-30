@@ -102,6 +102,23 @@ require('lazy').setup({
     "olimorris/onedarkpro.nvim",
     priority = 1000, -- Ensure it loads first
     config = function()
+      require("onedarkpro").setup({
+        styles = {
+          types = "italic",
+          methods = "NONE",
+          numbers = "NONE",
+          strings = "NONE",
+          comments = "NONE",
+          keywords = "bold,italic",
+          constants = "NONE",
+          functions = "NONE",
+          operators = "NONE",
+          variables = "NONE",
+          parameters = "bold",
+          conditionals = "italic",
+          virtual_text = "NONE",
+        }
+      })
       vim.cmd.colorscheme 'onedark'
     end,
   },

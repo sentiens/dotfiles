@@ -2,7 +2,7 @@ bindkey -e
 autoload -Uz +X compinit && compinit
 autoload -Uz +X bashcompinit && bashcompinit
 
-source "./.zshrc.private"
+source $HOME/.zshrc.private
 
 export GOPATH=$HOME/Projects/Go
 export GOBIN=$GOPATH/bin
@@ -37,8 +37,7 @@ export enhancd_enable_single_dot=0
 export ENHANCD_ENABLE_DOUBLE_DOT=0
 export ENHANCD_ARG_DOUBLE_DOT="..."
 
-export ZPLUG_HOME=/usr/local/opt/zplug
-if [ -f $ZPLUG_HOME/init.zsh ]; then
+if [ -n "$ZPLUG_HOME" ] && [ -f $ZPLUG_HOME/init.zsh ]; then
   source $ZPLUG_HOME/init.zsh
   zplug "b4b4r07/enhancd", use:init.sh
   zplug "mafredri/zsh-async", from:github
@@ -51,6 +50,6 @@ if [ -f $ZPLUG_HOME/init.zsh ]; then
   zstyle ':completion:*' menu select
   bindkey -M menuselect '\r' .accept-line
 else
-  echo "zplug is not installed"
+  echo "zplug is not installed or \$ZPLUG_HOME is not defined"
 fi
 

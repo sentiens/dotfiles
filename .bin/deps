@@ -1,6 +1,6 @@
 #!/bin/bash
 
-brew install neovim tmux tmuxinator zplug git rust go alacritty python fzf gitui gnu-sed rigrep fd reattach-to-user-namespace luarocks
+brew install python3 neovim tmux tmuxinator zplug git rust go alacritty python fzf gitui gnu-sed rigrep fd reattach-to-user-namespace luarocks
 brew install --cask font-victor-mono
 
-pip install tiktoken shell-gpt==0.9.1
+pip3 install tiktoken shell-gpt==0.9.1
