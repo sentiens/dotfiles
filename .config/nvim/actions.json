@@ -12,6 +12,19 @@
       }
     }
   },
+  "change_code": {
+    "type": "chat",
+    "opts": {
+      "template": "Edit the following code written in {{lang}} according to the instructions: {{argument}}.\n\nExisting code:\n```{{filetype}}\n{{input}}\n```\n\n```{{filetype}}\n",
+      "strategy": "replace",
+      "params": {
+        "model": "gpt-4",
+        "stop": [
+          "```"
+        ]
+      }
+    }
+  },
   "grammar_correction": {
     "type": "chat",
     "opts": {
@@ -135,15 +148,31 @@
       }
     }
   },
-  "roxygen_edit": {
+  "review_code": {
     "type": "chat",
     "opts": {
-      "template": "Insert a roxygen skeleton to document this R function:\n\n```{{filetype}}\n[insert]\n\n{{input}}\n\n```",
-      "strategy": "prepend",
+      "title": " Review code",
+      "template": "Review this chunk of code as a senior software engineer. Look carefully if this code contains logical errors and that it is in line with best practices. The answer should be a list of short abstracts that are worth paying attention to without further explanation. \n\nThe code:\n```{{filetype}}\n{{input}}\n```\n\n```{{filetype}}\n",
+      "strategy": "display",
       "params": {
-        "model": "gpt-3.5-turbo",
-        "temperature": 0.5,
-        "max_tokens": 1024
+        "model": "gpt-4",
+        "stop": [
+          "```"
+        ]
+      }
+    }
+  },
+  "imagine_tests": {
+    "type": "chat",
+    "opts": {
+      "title": " Imagine tests",
+      "template": "Come up with possible tests for this code. The output should be a list of short test names. The code:\n```{{filetype}}\n{{input}}\n```\n\n```{{filetype}}\n",
+      "strategy": "display",
+      "params": {
+        "model": "gpt-4",
+        "stop": [
+          "```"
+        ]
       }
     }
   },
