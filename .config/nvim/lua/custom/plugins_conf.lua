@@ -147,6 +147,18 @@ local on_attach = function(client, bufnr)
       end,
     })
   end
+  if client.name == 'gopls' then
+    client.server_capabilities.semanticTokensProvider = {
+      full = true,
+      legend = {
+        tokenTypes = { 'namespace', 'type', 'class', 'enum', 'interface', 'struct', 'typeParameter', 'parameter',
+          'variable', 'property', 'enumMember', 'event', 'function', 'method', 'macro', 'keyword', 'modifier', 'comment',
+          'string', 'number', 'regexp', 'operator', 'decorator' },
+        tokenModifiers = { 'declaration', 'definition', 'readonly', 'static', 'deprecated', 'abstract', 'async',
+          'modification', 'documentation', 'defaultLibrary' }
+      }
+    }
+  end
 end
 
 -- Enable the following language servers
@@ -156,7 +168,6 @@ end
 --  the `settings` field of the server config. You must look up that documentation yourself.
 local servers = {
   clangd = {},
-  gopls = {},
   phpactor = {},
   pyright = {},
   -- rust_analyzer = {},
@@ -168,6 +179,25 @@ local servers = {
   bashls = {},
   sqlls = {},
 
+  gopls = {
+    gopls = {
+      semanticTokens = true,
+      analyses = {
+        unusedparams = true,
+      },
+      staticcheck = true,
+      hints = {
+        assignVariableTypes = true,
+        compositeLiteralFields = true,
+        compositeLiteralTypes = true,
+        constantValues = true,
+        functionTypeParameters = true,
+        parameterNames = true,
+        rangeVariableTypes = true,
+      },
+    }
+  },
+
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
@@ -176,6 +206,8 @@ local servers = {
   },
 }
 
+
+vim.lsp.set_log_level('debug')
 -- Setup neovim lua configuration
 require('neodev').setup {
   library = { plugins = { "nvim-dap-ui" }, types = true },
@@ -187,6 +219,10 @@ local mason_lspconfig = require 'mason-lspconfig'
 mason_lspconfig.setup {
   ensure_installed = vim.tbl_keys(servers),
 }
+
+-- nvim-cmp supports additional completion capabilities, so broadcast that to servers
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
 mason_lspconfig.setup_handlers {
   function(server_name)
@@ -296,10 +332,6 @@ dap.adapters = {
 }
 
 require("nvim-dap-virtual-text").setup()
-
--- nvim-cmp supports additional completion capabilities, so broadcast that to servers
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
 -- nvim-cmp setup
 local cmp = require 'cmp'
