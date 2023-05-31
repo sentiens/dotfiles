@@ -224,42 +224,6 @@ dap.listeners.before.event_exited["dapui_config"] = function()
   dapui.close()
 end
 
-dap.configurations.go = {
-  {
-    type = "go",         -- Which adapter to use
-    name = "Debug",      -- Human readable name
-    request = "launch",  -- Whether to "launch" or "attach" to program
-    program = "${file}", -- The buffer you are focused on when running nvim-dap
-  },
-}
-
-dap.adapters.go = {
-  type = "server",
-  port = "${port}",
-  executable = {
-    command = vim.fn.stdpath("data") .. '/mason/bin/dlv',
-    args = { "dap", "-l", "127.0.0.1:${port}" },
-  },
-}
-
-dap.configurations.php = {
-  {
-    type = "php",
-    request = "launch",
-    name = "Listen for Xdebug",
-    port = 9003,
-    pathMappings = {
-      ["/var/www/html"] = "${workspaceFolder}"
-    }
-  }
-}
-
-dap.adapters.php = {
-  type = "executable",
-  command = "node",
-  args = { vim.fn.stdpath("data") .. "/mason/packages/php-debug-adapter/extension/out/vscode-php-debug/out/phpDebug.js" }
-}
-
 dap.configurations = {
   javascript = {
     {
@@ -282,13 +246,53 @@ dap.configurations = {
       protocol = 'inspector',
       console = 'integratedTerminal',
     },
+  },
+  go = {
+    {
+      type = "go",
+      name = "Debug",
+      request = "launch",
+      program = "${file}",
+    },
+    {
+      type = "go",
+      name = "Attach remote",
+      mode = "remote",
+      request = "attach",
+    },
+  },
+  php = {
+    {
+      type = "php",
+      request = "launch",
+      name = "Listen for Xdebug",
+      port = 9003,
+      pathMappings = {
+        ["/var/www/html"] = "${workspaceFolder}"
+      }
+    }
   }
 }
 
-dap.adapters.node2 = {
-  type = 'executable',
-  command = 'node',
-  args = { vim.fn.stdpath("data") .. '/mason/packages/node-debug2-adapter/out/src/nodeDebug.js' },
+dap.adapters = {
+  go = {
+    type = "server",
+    port = "${port}",
+    executable = {
+      command = vim.fn.stdpath("data") .. '/mason/bin/dlv',
+      args = { "dap", "-l", "127.0.0.1:${port}" },
+    },
+  },
+  php = {
+    type = "executable",
+    command = "node",
+    args = { vim.fn.stdpath("data") .. "/mason/packages/php-debug-adapter/extension/out/vscode-php-debug/out/phpDebug.js" }
+  },
+  node2 = {
+    type = 'executable',
+    command = 'node',
+    args = { vim.fn.stdpath("data") .. '/mason/packages/node-debug2-adapter/out/src/nodeDebug.js' },
+  }
 }
 
 require("nvim-dap-virtual-text").setup()
@@ -332,7 +336,7 @@ cmp.setup {
     ['<C-p>'] = cmp.mapping.select_prev_item(),
     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-Space>'] = cmp.mapping.complete {},
+    ['<C-l>'] = cmp.mapping.complete {},
     ['<CR>'] = cmp.mapping.confirm {
       behavior = cmp.ConfirmBehavior.Replace,
       select = true,

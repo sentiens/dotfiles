@@ -156,8 +156,21 @@ set('n', '<leader>tt', '<CMD>ToggleTerm<CR>', { noremap = true, silent = true })
 
 set({ 'n', 'v' }, '<leader>ac', '<cmd>ChatGPT<CR>', { silent = true })
 set({ 'n', 'v' }, '<leader>aa', '<cmd>ChatGPTActAs<CR>', { silent = true })
-set({ 'v' }, '<leader>ae', '<cmd>ChatGPTEditWithInstructions<CR>', { silent = true })
-set({ 'v', 'n' }, '<leader>ar', ':ChatGPTRun ', { silent = true })
+set({ 'v', 'n' }, '<leader>ar', ':ChatGPTRun<space>', {})
+set({ 'n', 'v' }, '<leader>arc', ":ChatGPTRun<space>change_code")
+set({ 'n', 'v' }, '<leader>art', "<cmd>ChatGPTRun add_tests<CR>")
+set({ 'n', 'v' }, '<leader>ara', "<cmd>ChatGPTRun code_readability_analysis<CR>")
+set({ 'n', 'v' }, '<leader>arn', "<cmd>ChatGPTRun complete_code<CR>")
+set({ 'n', 'v' }, '<leader>ard', "<cmd>ChatGPTRun docstring<CR>")
+set({ 'n', 'v' }, '<leader>are', "<cmd>ChatGPTRun explain_code<CR>")
+set({ 'n', 'v' }, '<leader>arf', "<cmd>ChatGPTRun fix_bugs<CR>")
+set({ 'n', 'v' }, '<leader>arg', "<cmd>ChatGPTRun grammar_correction<CR>")
+set({ 'n', 'v' }, '<leader>ars', "<cmd>ChatGPTRun imagine_tests<CR>")
+set({ 'n', 'v' }, '<leader>ark', "<cmd>ChatGPTRun keywords<CR>")
+set({ 'n', 'v' }, '<leader>aro', "<cmd>ChatGPTRun optimize_code<CR>")
+set({ 'n', 'v' }, '<leader>arr', "<cmd>ChatGPTRun review_code<CR>")
+set({ 'n', 'v' }, '<leader>arm', "<cmd>ChatGPTRun summarize<CR>")
+set({ 'n', 'v' }, '<leader>art', "<cmd>ChatGPTRun translate<CR>")
 
 local kopts = { noremap = true, silent = true }
 
