@@ -383,3 +383,5 @@ require('nvim-ts-autotag').setup()
 require('hlslens').setup()
 
 require('Comment').setup()
+
+require('hlargs').setup()
