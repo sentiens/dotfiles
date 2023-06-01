@@ -123,7 +123,7 @@ local on_attach = function(client, bufnr)
   nmap('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
   nmap('gT', vim.lsp.buf.type_definition, '[T]ype [D]efinition')
 
-  nmap('<leader>/s', require('telescope.builtin').lsp_document_symbols, 'Find symbols')
+  nmap('<leader>bs', require('telescope.builtin').lsp_document_symbols, 'Buffer symbols')
   nmap('<leader>fs', require('telescope.builtin').lsp_dynamic_workspace_symbols, 'Workspace(global) [S]ymbols')
 
   -- See `:help K` for why this keymap
@@ -151,8 +151,8 @@ local on_attach = function(client, bufnr)
     client.server_capabilities.semanticTokensProvider = {
       full = true,
       legend = {
-        tokenTypes = { 'namespace', 'type', 'class', 'enum', 'interface', 'struct', 'typeParameter', 'parameter',
-          'variable', 'property', 'enumMember', 'event', 'function', 'method', 'macro', 'keyword', 'modifier', 'comment',
+        tokenTypes = { 'namespace', 'type', 'interface', 'struct', 'typeParameter', 'parameter',
+          'function', 'method', 'modifier', 'comment',
           'string', 'number', 'regexp', 'operator', 'decorator' },
         tokenModifiers = { 'declaration', 'definition', 'readonly', 'static', 'deprecated', 'abstract', 'async',
           'modification', 'documentation', 'defaultLibrary' }
@@ -160,6 +160,27 @@ local on_attach = function(client, bufnr)
     }
   end
 end
+
+-- fix showing some keywords as constants in some lsps
+vim.api.nvim_create_autocmd('LspTokenUpdate', {
+  callback = function(args)
+    local token = args.data.token
+    if token.modifiers.readonly and token.modifiers.defaultLibrary then
+      local trees_info = vim.treesitter.get_captures_at_pos(args.buf, token.line, token.start_col)
+      print(vim.inspect(trees_info))
+
+      for i, tres_info in ipairs(trees_info) do
+        if tres_info.capture == 'constant.builtin' then
+          vim.lsp.semantic_tokens.highlight_token(
+            token, args.buf, args.data.client_id, '@constant.builtin.go', {
+              priority = 200,
+            }
+          )
+        end
+      end
+    end
+  end,
+})
 
 -- Enable the following language servers
 --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
@@ -206,8 +227,6 @@ local servers = {
   },
 }
 
-
-vim.lsp.set_log_level('debug')
 -- Setup neovim lua configuration
 require('neodev').setup {
   library = { plugins = { "nvim-dap-ui" }, types = true },

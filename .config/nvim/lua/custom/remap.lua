@@ -105,8 +105,8 @@ set('n', '<leader>Sp', '<cmd>lua require("spectre").open_file_search({select_wor
   })
 
 -- See `:help telescope.builtin`
-set('n', '<leader>b', require('telescope.builtin').buffers, { desc = 'Find existing buffers' })
-set('n', '<leader>/f', function()
+set('n', '<leader>bf', require('telescope.builtin').buffers, { desc = 'Find existing buffers' })
+set('n', '<leader>b/', function()
   -- You can pass additional configuration to telescope to change theme, layout, etc.
   require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
     winblend = 10,
