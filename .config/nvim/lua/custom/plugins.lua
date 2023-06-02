@@ -459,4 +459,10 @@ require('lazy').setup({
       })
     end
   },
+  {
+    "gbprod/cutlass.nvim",
+    opts = {
+      cut_key = "m"
+    }
+  }
 }, {})

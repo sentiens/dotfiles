@@ -64,13 +64,9 @@ set('v', '<leader>K', '"zy`[\"zp`[v`]:MoveBlock(-1)<CR>', { noremap = true, sile
 set('v', '<leader>H', '"zy`[\"zp`[v`]:MoveHBlock(-1)<CR>', { noremap = true, silent = true })
 set('v', '<leader>L', '"zy`]\"zP`[v`]:MoveHBlock(1)<CR>', { noremap = true, silent = true })
 
-set("x", "<leader>p", [["_dP]])
--- Just remove without clipboard
-set({ "n", "v" }, "D", '"_d', { silent = true, noremap = true })
-
 set('n', '<C-q>', ':bd<CR>', { silent = true })
 set('v', 'p', '"_dp', { noremap = true, silent = true })
-set('v', '<C-x>', 'd', { noremap = true })
+set('v', '<C-x>', 'm', { noremap = true })
 
 -- For use default preset and it work with dot
 set('n', '<leader>mt', require('treesj').toggle)
