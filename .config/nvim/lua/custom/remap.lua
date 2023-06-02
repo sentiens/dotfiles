@@ -16,7 +16,6 @@ local capi = require('Comment.api')
 
 _G.comment_and_todo = function()
   capi.locked('insert.linewise.eol')("char")
-  -- Insert TODO after inserting the comment
   vim.api.nvim_put({ 'TODO: ' }, 'c', true, true)
 end
 
@@ -165,10 +164,27 @@ set({ "n", "o", "x" }, "e", "<cmd>lua require('spider').motion('e')<CR>", { desc
 set({ "n", "o", "x" }, "b", "<cmd>lua require('spider').motion('b')<CR>", { desc = "Spider-b" })
 set({ "n", "o", "x" }, "ge", "<cmd>lua require('spider').motion('ge')<CR>", { desc = "Spider-ge" })
 
-set({ 'n', 'v' }, '<leader>ao', '<cmd>NeoAIOpen<CR>', { silent = true, desc = "AI: Open chat" })
+set({ 'n', 'v' }, '<leader>ao', ':NeoAI<space>', { silent = true, desc = "AI: Open chat" })
 set({ 'n', 'v' }, '<leader>ac', '<cmd>NeoAIClose<CR>', { silent = true, desc = "AI: Close chat" })
-local kopts = { noremap = true, silent = true }
+set({ 'v' }, "<leader>ax", ':NeoAIContextOpen<space>""<Left>', { desc = "AI: With context" })
+set({ 'v' }, "<leader>ac",
+  ':NeoAIContextOpen<space>"Return just the plain text code, then descriptions and clarifications. Edit the code with the instructions: "<Left>',
+  { silent = false, desc = "AI: Change code" })
+set({ 'v' }, "<leader>ae",
+  ':NeoAIContextOpen<space>"Explain what this code does please."<CR>',
+  { silent = false, desc = "AI: Explain" })
+set({ 'v' }, "<leader>at",
+  ':NeoAIContextOpen<space>"Implement TODO in the code."<CR>',
+  { silent = false, desc = "AI: TODO" })
+set({ 'v' }, "<leader>ar",
+  ':NeoAIContextOpen<space>"Review this chunk of code as a senior software engineer. Look carefully if this code contains logical errors and that it is in line with best practices. The answer should be a list of short abstracts that are worth paying attention to without further explanation."<CR>',
+  { silent = false, desc = "AI: Review" })
+set({ 'v' }, "<leader>as",
+  ':NeoAIContextOpen<space>"Come up with possible tests for this code. The output should be a list of short test names."<CR>',
+  { silent = false, desc = "AI: Imagine tests" })
 
+
+local kopts = { noremap = true, silent = true }
 set('n', 'n',
   [[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]],
   kopts)
