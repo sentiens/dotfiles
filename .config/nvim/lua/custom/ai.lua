@@ -31,25 +31,11 @@ require("copilot").setup {
 
 require("copilot_cmp").setup()
 
-require("chatgpt").setup {
-  edit_with_instructions = {
-    diff = true,
-    keymaps = {
-      accept = "<C-y>",
-      toggle_diff = "<C-d>",
-      toggle_settings = "<C-o>",
-      cycle_windows = "<Tab>",
-      use_output_as_input = "<C-i>",
+require("neoai").setup({
+  models = {
+    {
+      name = "openai",
+      model = "gpt-4"
     },
   },
-  openai_params = {
-    model = "gpt-4",
-    max_tokens = 4096,
-  },
-  openai_edit_params = {
-    model = "code-davinci-edit-001",
-  },
-  actions_paths = {
-    "~/.config/nvim/actions.json"
-  },
-}
+})

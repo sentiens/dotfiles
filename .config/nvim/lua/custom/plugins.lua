@@ -365,7 +365,7 @@ require('lazy').setup({
       require("nvim-surround").setup {}
     end
   },
-  { 'akinsho/toggleterm.nvim', version = "*", config = true },
+  { 'akinsho/toggleterm.nvim',   version = "*", config = true },
   {
     'tzachar/cmp-tabnine',
     build = './install.sh',
@@ -374,15 +374,6 @@ require('lazy').setup({
   { "zbirenbaum/copilot.lua" },
   { "zbirenbaum/copilot-cmp" },
   { "rmagatti/auto-session" },
-  {
-    "jackMort/ChatGPT.nvim",
-    event = "VeryLazy",
-    dependencies = {
-      "MunifTanjim/nui.nvim",
-      "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope.nvim"
-    }
-  },
   { "windwp/nvim-ts-autotag" },
   { "mg979/vim-visual-multi" },
   { "RRethy/vim-illuminate" },
@@ -449,5 +440,12 @@ require('lazy').setup({
     "nvim-telescope/telescope-frecency.nvim",
     dependencies = { "kkharji/sqlite.lua" }
   },
-  { "smartpde/telescope-recent-files" }
+  { "smartpde/telescope-recent-files" },
+  {
+    "Bryley/neoai.nvim",
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+    },
+  },
+  { "chrisgrieser/nvim-spider", lazy = true },
 }, {})

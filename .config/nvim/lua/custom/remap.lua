@@ -114,9 +114,9 @@ set('n', '<leader>b/', function()
   })
 end, { desc = '[/] Fuzzily search in current buffer' })
 -- set('n', '<leader>fr', require('telescope.builtin').oldfiles, { desc = '[F]ind [R]ecently opened files' })
-set("n", "<leader>fr", "<Cmd>lua require('telescope').extensions.frecency.frecency()<CR>",
+set("n", "<leader>fh", "<Cmd>lua require('telescope').extensions.frecency.frecency()<CR>",
   { noremap = true, silent = true })
-set("n", "<Leader>fh",
+set("n", "<Leader>fr",
   [[<cmd>lua require('telescope').extensions.recent_files.pick()<CR>]],
   { noremap = true, silent = true })
 
@@ -160,24 +160,13 @@ end
 vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
 set('n', '<leader>tt', '<CMD>ToggleTerm<CR>', { noremap = true, silent = true })
 
-set({ 'n', 'v' }, '<leader>ac', '<cmd>ChatGPT<CR>', { silent = true })
-set({ 'n', 'v' }, '<leader>aa', '<cmd>ChatGPTActAs<CR>', { silent = true })
-set({ 'v', 'n' }, '<leader>ar', ':ChatGPTRun<space>', {})
-set({ 'n', 'v' }, '<leader>arc', ":ChatGPTRun<space>change_code")
-set({ 'n', 'v' }, '<leader>art', "<cmd>ChatGPTRun add_tests<CR>")
-set({ 'n', 'v' }, '<leader>ara', "<cmd>ChatGPTRun code_readability_analysis<CR>")
-set({ 'n', 'v' }, '<leader>arn', "<cmd>ChatGPTRun complete_code<CR>")
-set({ 'n', 'v' }, '<leader>ard', "<cmd>ChatGPTRun docstring<CR>")
-set({ 'n', 'v' }, '<leader>are', "<cmd>ChatGPTRun explain_code<CR>")
-set({ 'n', 'v' }, '<leader>arf', "<cmd>ChatGPTRun fix_bugs<CR>")
-set({ 'n', 'v' }, '<leader>arg', "<cmd>ChatGPTRun grammar_correction<CR>")
-set({ 'n', 'v' }, '<leader>ars', "<cmd>ChatGPTRun imagine_tests<CR>")
-set({ 'n', 'v' }, '<leader>ark', "<cmd>ChatGPTRun keywords<CR>")
-set({ 'n', 'v' }, '<leader>aro', "<cmd>ChatGPTRun optimize_code<CR>")
-set({ 'n', 'v' }, '<leader>arr', "<cmd>ChatGPTRun review_code<CR>")
-set({ 'n', 'v' }, '<leader>arm', "<cmd>ChatGPTRun summarize<CR>")
-set({ 'n', 'v' }, '<leader>art', "<cmd>ChatGPTRun translate<CR>")
+set({ "n", "o", "x" }, "w", "<cmd>lua require('spider').motion('w')<CR>", { desc = "Spider-w" })
+set({ "n", "o", "x" }, "e", "<cmd>lua require('spider').motion('e')<CR>", { desc = "Spider-e" })
+set({ "n", "o", "x" }, "b", "<cmd>lua require('spider').motion('b')<CR>", { desc = "Spider-b" })
+set({ "n", "o", "x" }, "ge", "<cmd>lua require('spider').motion('ge')<CR>", { desc = "Spider-ge" })
 
+set({ 'n', 'v' }, '<leader>ao', '<cmd>NeoAIOpen<CR>', { silent = true, desc = "AI: Open chat" })
+set({ 'n', 'v' }, '<leader>ac', '<cmd>NeoAIClose<CR>', { silent = true, desc = "AI: Close chat" })
 local kopts = { noremap = true, silent = true }
 
 set('n', 'n',

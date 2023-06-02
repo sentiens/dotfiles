@@ -450,3 +450,14 @@ require('hlslens').setup()
 require('Comment').setup()
 
 require('hlargs').setup()
+
+require('neoai').setup {
+  prompts = {
+    context_prompt = function(context)
+      return "I'd like to provide some context for future "
+          .. "messages. Here is the code/text that I want to refer "
+          .. "to in our upcoming conversations, file " .. vim.fn.expand('%:t') .. ":\n\n"
+          .. context
+    end,
+  },
+}
