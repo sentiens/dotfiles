@@ -108,6 +108,8 @@ require('lazy').setup({
           ["@namespace.go"] = { fg = "#2bbac5" },
           ["@lsp.type.namespace.go"] = { fg = "#2bbac5" },
           ["@lsp.typemod.modifier.readonly.go"] = { fg = "#d19a66" },
+          ["@function.builtin.go"] = { fg = "#dd5ba5" },
+          ["@number.go"] = { fg = "#768bf3" },
         },
 
         styles = {
@@ -422,5 +424,25 @@ require('lazy').setup({
     event = { "CmdlineEnter" },
     ft = { "go", 'gomod' },
     build = ':lua require("go.install").update_all_sync()' -- if you need to install/update all binaries
+  },
+  {
+    'mvllow/modes.nvim',
+    config = function()
+      require('modes').setup({
+        set_cursorline = true,
+        colors = {
+          copy = "#f5c359",
+          delete = "#c75c6a",
+          insert = "#78ccc5",
+          visual = "#9e47cc",
+        },
+        line_opacity = 0.25,
+      })
+      vim.api.nvim_exec([[
+        highlight CursorLine guibg=#2f343f
+        autocmd InsertEnter * highlight CursorLine guibg=#2f343f
+        autocmd InsertLeave * highlight CursorLine guibg=#2f343f
+      ]], false)
+    end
   }
 }, {})

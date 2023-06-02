@@ -167,7 +167,6 @@ vim.api.nvim_create_autocmd('LspTokenUpdate', {
     local token = args.data.token
     if token.modifiers.readonly and token.modifiers.defaultLibrary then
       local trees_info = vim.treesitter.get_captures_at_pos(args.buf, token.line, token.start_col)
-      print(vim.inspect(trees_info))
 
       for i, tres_info in ipairs(trees_info) do
         if tres_info.capture == 'constant.builtin' then
