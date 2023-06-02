@@ -60,10 +60,10 @@ set('v', 'J', ':MoveBlock(1)<CR>', opts)
 set('v', 'K', ':MoveBlock(-1)<CR>', opts)
 set('v', 'H', ':MoveHBlock(-1)<CR>', opts)
 set('v', 'L', ':MoveHBlock(1)<CR>', opts)
-set('v', '<leader>J', 'y`]P`[v`]:MoveBlock(1)<CR>', { noremap = true, silent = true })
-set('v', '<leader>K', 'y`[p`[v`]:MoveBlock(-1)<CR>', { noremap = true, silent = true })
-set('v', '<leader>H', 'y`[P`[v`]:MoveHBlock(-1)<CR>', { noremap = true, silent = true })
-set('v', '<leader>L', 'y`]P`[v`]:MoveHBlock(1)<CR>', { noremap = true, silent = true })
+set('v', '<leader>J', '"zy`]\"zP`[v`]:MoveBlock(1)<CR>', { noremap = true, silent = true })
+set('v', '<leader>K', '"zy`[\"zp`[v`]:MoveBlock(-1)<CR>', { noremap = true, silent = true })
+set('v', '<leader>H', '"zy`[\"zp`[v`]:MoveHBlock(-1)<CR>', { noremap = true, silent = true })
+set('v', '<leader>L', '"zy`]\"zP`[v`]:MoveHBlock(1)<CR>', { noremap = true, silent = true })
 
 set("x", "<leader>p", [["_dP]])
 -- Just remove without clipboard
@@ -113,10 +113,16 @@ set('n', '<leader>b/', function()
     previewer = false,
   })
 end, { desc = '[/] Fuzzily search in current buffer' })
-set('n', '<leader>fr', require('telescope.builtin').oldfiles, { desc = '[F]ind [R]ecently opened files' })
+-- set('n', '<leader>fr', require('telescope.builtin').oldfiles, { desc = '[F]ind [R]ecently opened files' })
+set("n", "<leader>fr", "<Cmd>lua require('telescope').extensions.frecency.frecency()<CR>",
+  { noremap = true, silent = true })
+set("n", "<Leader>fh",
+  [[<cmd>lua require('telescope').extensions.recent_files.pick()<CR>]],
+  { noremap = true, silent = true })
+
 set('n', '<leader>fg', require('telescope.builtin').git_files, { desc = '[F]ind [G]it [F]iles' })
 set('n', '<leader>ff', require('telescope.builtin').find_files, { desc = '[F]ind [F]iles' })
-set('n', '<leader>fh', require('telescope.builtin').help_tags, { desc = '[F]find [H]elp' })
+set('n', '<leader>f?', require('telescope.builtin').help_tags, { desc = '[F]find [H]elp' })
 set('n', '<leader>fw', require('telescope.builtin').grep_string, { desc = '[F]find current [W]ord' })
 set('n', '<leader>f/', require('telescope.builtin').live_grep, { desc = '[F]find by grep' })
 set('n', '<leader>fd', require('telescope.builtin').diagnostics, { desc = '[F]find [D]iagnostics' })

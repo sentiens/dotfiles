@@ -15,8 +15,8 @@
   "change_code": {
     "type": "chat",
     "opts": {
-      "template": "Edit the following code written in {{lang}} according to the instructions: {{argument}}.\n\nExisting code:\n```{{filetype}}\n{{input}}\n```\n\n```{{filetype}}\n",
-      "strategy": "replace",
+      "template": "Edit the following code written in {{lang}} according to the instructions: {{argument}}.\n\nExisting code:\n```{{filetype}}\n{{input}}\n```\n\n```",
+      "strategy": "chat",
       "params": {
         "model": "gpt-4",
         "stop": [

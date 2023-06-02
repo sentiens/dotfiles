@@ -444,5 +444,10 @@ require('lazy').setup({
         autocmd InsertLeave * highlight CursorLine guibg=#2f343f
       ]], false)
     end
-  }
+  },
+  {
+    "nvim-telescope/telescope-frecency.nvim",
+    dependencies = { "kkharji/sqlite.lua" }
+  },
+  { "smartpde/telescope-recent-files" }
 }, {})

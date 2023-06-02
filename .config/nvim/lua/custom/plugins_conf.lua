@@ -26,6 +26,15 @@ require('telescope').setup {
       initial_mode = "normal",
       hidden = true,
       respect_gitignore = false
+    },
+    frecency = {
+      show_unindexed = false,
+      ignore_patterns = { "*.git/*" },
+      default_workspace = 'CWD'
+    },
+    recent_files = {
+      ignore_patterns = { "*.git/*" },
+      only_cwd = true
     }
   },
   pickers = {
@@ -39,6 +48,8 @@ require('telescope').setup {
 pcall(require('telescope').load_extension, 'fzf')
 pcall(require("telescope").load_extension, "file_browser")
 pcall(require('telescope').load_extension, 'dap')
+pcall(require('telescope').load_extension, 'frecency')
+pcall(require("telescope").load_extension, "recent_files")
 
 require('textcase').setup {}
 pcall(require('telescope').load_extension, 'textcase')
