@@ -17,7 +17,11 @@ require('telescope').setup {
       i = {
         ['<C-u>'] = false,
         ['<C-d>'] = false,
+        ['<C-x>'] = require('telescope.actions').delete_buffer,
       },
+      n = {
+        ['<C-x>'] = require('telescope.actions').delete_buffer,
+      }
     },
   },
   extensions = {
@@ -362,6 +366,7 @@ dap.adapters = {
 
 require("nvim-dap-virtual-text").setup()
 
+require("nvim-autopairs").setup {}
 -- nvim-cmp setup
 local cmp = require 'cmp'
 local luasnip = require 'luasnip'
@@ -370,15 +375,19 @@ luasnip.config.setup {}
 
 local lspkind = require 'lspkind'
 require("luasnip.loaders.from_vscode").lazy_load()
-
 cmp.setup {
+  preselect = cmp.PreselectMode.None,
   formatting = {
     format = lspkind.cmp_format({
       mode = 'symbol_text',
       maxwidth = 50,
       ellipsis_char = '...',
 
-      symbol_map = { Codeium = "", Tabnine = "", Copilot = "" }
+      symbol_map = {
+        Codeium = "",
+        Tabnine = "",
+        Copilot = "",
+      }
     })
   },
   snippet = {
@@ -393,22 +402,18 @@ cmp.setup {
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-l>'] = cmp.mapping.complete {},
     ['<CR>'] = cmp.mapping.confirm {
-      behavior = cmp.ConfirmBehavior.Replace,
-      select = true,
+      behavior = cmp.ConfirmBehavior.Insert,
+      select = false,
     },
     ['<Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      elseif luasnip.expand_or_jumpable() then
+      if luasnip.expand_or_jumpable() then
         luasnip.expand_or_jump()
       else
         fallback()
       end
     end, { 'i', 's' }),
     ['<S-Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      elseif luasnip.jumpable(-1) then
+      if luasnip.jumpable(-1) then
         luasnip.jump(-1)
       else
         fallback()
@@ -426,7 +431,12 @@ cmp.setup {
   },
 }
 
-require('mini.pairs').setup()
+local cmp_autopairs = require('nvim-autopairs.completion.cmp')
+local cmp = require('cmp')
+cmp.event:on(
+  'confirm_done',
+  cmp_autopairs.on_confirm_done()
+)
 
 require("toggleterm").setup {
   size = function(term)
@@ -458,3 +468,12 @@ require('neoai').setup {
     end,
   },
 }
+
+local format_sync_grp = vim.api.nvim_create_augroup("GoImport", {})
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*.go",
+  callback = function()
+    require('go.format').goimport()
+  end,
+  group = format_sync_grp,
+})

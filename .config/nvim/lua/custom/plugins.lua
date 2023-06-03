@@ -104,7 +104,7 @@ require('lazy').setup({
     config = function()
       require("onedarkpro").setup({
         highlights = {
-          ["@property.go"] = { fg = "#abb2bf" },
+          -- ["@property.go"] = { fg = "#abb2bf" },
           ["@namespace.go"] = { fg = "#2bbac5" },
           ["@lsp.type.namespace.go"] = { fg = "#2bbac5" },
           ["@lsp.typemod.modifier.readonly.go"] = { fg = "#d19a66" },
@@ -150,8 +150,8 @@ require('lazy').setup({
         },
         sections = {
           lualine_a = { 'mode' },
-          lualine_b = { 'diff', 'diagnostics' },
-          lualine_c = {},
+          lualine_b = { 'branch', 'diff', 'diagnostics' },
+          lualine_c = { { 'filename', path = 1 } },
           lualine_x = {},
           lualine_y = {},
           lualine_z = {}
@@ -356,7 +356,7 @@ require('lazy').setup({
     end
   },
   { "onsails/lspkind.nvim" },
-  { "echasnovski/mini.pairs" },
+  { "windwp/nvim-autopairs" },
   {
     "kylechui/nvim-surround",
     version = "*", -- Use for stability; omit to use `main` branch for the latest features
