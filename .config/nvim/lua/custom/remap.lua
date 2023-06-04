@@ -66,7 +66,12 @@ set('v', '<leader>L', '"zy`]\"zP`[v`]:MoveHBlock(1)<CR>', { noremap = true, sile
 
 set('n', '<C-q>', ':bd<CR>', { silent = true })
 set('v', 'p', '"_dp', { noremap = true, silent = true })
-set('v', '<C-x>', 'm', { noremap = true })
+
+set('n', '<C-x>', 'V<C-x>', { noremap = false, silent = true, remap = true })
+
+set('n', 'sd', '<Plug>(nvim-surround-delete)')
+set('n', 'sc', "<Plug>(nvim-surround-change)")
+set('n', 'std', '<Plug>(nvim-surround-delete)t')
 
 -- For use default preset and it work with dot
 set('n', '<leader>mt', require('treesj').toggle)
@@ -140,6 +145,13 @@ set("n", "<leader>d/", "<cmd>TroubleToggle document_diagnostics<cr>", { silent =
 set("n", "<leader>dl", "<cmd>TroubleToggle loclist<cr>", { silent = true, noremap = true })
 set("n", "<leader>df", "<cmd>TroubleToggle quickfix<cr>", { silent = true, noremap = true })
 set("n", "dr", "<cmd>TroubleToggle lsp_references<cr>", { silent = true, noremap = true })
+set(
+  "",
+  "<Leader>ds",
+  require("lsp_lines").toggle,
+  { desc = "Toggle lsp_lines" }
+)
+
 
 function _G.set_terminal_keymaps()
   local opts = { buffer = 0 }

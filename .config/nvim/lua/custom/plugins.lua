@@ -361,9 +361,6 @@ require('lazy').setup({
     "kylechui/nvim-surround",
     version = "*", -- Use for stability; omit to use `main` branch for the latest features
     event = "VeryLazy",
-    config = function()
-      require("nvim-surround").setup {}
-    end
   },
   { 'akinsho/toggleterm.nvim',   version = "*", config = true },
   {
@@ -447,7 +444,7 @@ require('lazy').setup({
       "MunifTanjim/nui.nvim",
     },
   },
-  { "chrisgrieser/nvim-spider", lazy = true },
+  { "chrisgrieser/nvim-spider",                    lazy = true },
   {
     "jcdickinson/codeium.nvim",
     dependencies = {
@@ -459,10 +456,19 @@ require('lazy').setup({
       })
     end
   },
+  { "gbprod/cutlass.nvim" },
+  { "https://git.sr.ht/~whynothugo/lsp_lines.nvim" },
+  { 'RishabhRD/popfix' },
   {
-    "gbprod/cutlass.nvim",
-    opts = {
-      cut_key = "m"
+    "glepnir/lspsaga.nvim",
+    event = "LspAttach",
+    config = function()
+      require("lspsaga").setup({})
+    end,
+    dependencies = {
+      { "nvim-tree/nvim-web-devicons" },
+      --Please make sure you install markdown and markdown_inline parser
+      { "nvim-treesitter/nvim-treesitter" }
     }
   }
 }, {})

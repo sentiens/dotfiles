@@ -1,3 +1,13 @@
+require("cutlass").setup({
+  cut_key = "<C-x>",
+  exclude = {
+    "ns",
+    "nS",
+    "ng",
+    "sg",
+  },
+})
+
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
@@ -55,7 +65,9 @@ pcall(require('telescope').load_extension, 'dap')
 pcall(require('telescope').load_extension, 'frecency')
 pcall(require("telescope").load_extension, "recent_files")
 
-require('textcase').setup {}
+require('textcase').setup {
+  prefix = '<leader>mz'
+}
 pcall(require('telescope').load_extension, 'textcase')
 
 -- [[ Configure Treesitter ]]
@@ -95,6 +107,10 @@ require('nvim-treesitter.configs').setup {
   -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
   auto_install = true,
 
+  autotag = {
+    enable = true,
+  },
+
   highlight = { enable = true },
   indent = { enable = true, disable = { 'python' } },
   incremental_selection = {
@@ -118,37 +134,47 @@ local on_attach = function(client, bufnr)
   --
   -- In this case, we create a function that lets us more easily define mappings specific
   -- for LSP related items. It sets the mode, buffer and description for us each time.
-  local nmap = function(keys, func, desc, i)
+  local map = function(keys, func, desc, modes)
     if desc then
       desc = 'LSP: ' .. desc
     end
 
-    vim.keymap.set({ 'n', 'v' }, keys, func, { buffer = bufnr, desc = desc })
-    if i then
-      vim.keymap.set('i', keys, func, { buffer = bufnr, desc = desc })
+    vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
+    if modes then
+      for _, mode in ipairs(modes) do
+        vim.keymap.set(mode, keys, func, { buffer = bufnr, desc = desc })
+      end
     end
   end
 
-  nmap('<leader>mr', vim.lsp.buf.rename, 'Rename')
-  nmap('<leader>mc', vim.lsp.buf.code_action, 'Code Action')
+  map('<leader>mr', vim.lsp.buf.rename, 'Rename')
+  map('<leader>mc', '<cmd>Lspsaga code_action<CR>', 'Code Action')
 
-  nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
-  nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-  nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
-  nmap('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
-  nmap('gT', vim.lsp.buf.type_definition, '[T]ype [D]efinition')
+  map('ga', "<cmd>Lspsaga lsp_finder<CR>", '[G]oto [D]efinition')
+  map('gd', "<cmd>Lspsaga goto_definition<CR>", '[G]oto [D]efinition')
+  map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+  map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+  map('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
+  map('gt', "<cmd>Lspsaga goto_type_definition<CR>", '[T]ype [D]efinition')
+  map('gT', "<cmd>Lspsaga peek_type_definition<CR>", '[T]ype [D]efinition')
+  map("gp", "<cmd>Lspsaga peek_definition<CR>", "Peek definition")
 
-  nmap('<leader>bs', require('telescope.builtin').lsp_document_symbols, 'Buffer symbols')
-  nmap('<leader>fs', require('telescope.builtin').lsp_dynamic_workspace_symbols, 'Workspace(global) [S]ymbols')
+  map("<leader>o", "<cmd>Lspsaga outline<CR>", "Show outline")
 
-  -- See `:help K` for why this keymap
-  nmap('<C-j>', vim.lsp.buf.hover, 'Hover Documentation')
-  nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation', true)
+  map("<Leader>gi", "<cmd>Lspsaga incoming_calls<CR>")
+  map("<Leader>go", "<cmd>Lspsaga outgoing_calls<CR>")
+
+
+  map('<leader>bs', require('telescope.builtin').lsp_document_symbols, 'Buffer symbols')
+  map('<leader>fs', require('telescope.builtin').lsp_dynamic_workspace_symbols, 'Workspace(global) [S]ymbols')
+
+  map('<C-j>', "<cmd>Lspsaga hover_doc ++keep<CR>", 'Hover Documentation', { "v", "i" })
+  map('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation', { "v", "i" })
 
   -- Lesser used LSP functionality
-  nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
-  nmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
-  nmap('<leader>wl', function()
+  map('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
+  map('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
+  map('<leader>wl', function()
     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
   end, '[W]orkspace [L]ist Folders')
 
@@ -477,3 +503,11 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   end,
   group = format_sync_grp,
 })
+
+vim.diagnostic.config({
+  virtual_text = false,
+})
+require("lsp_lines").setup()
+
+
+require("nvim-surround").setup {}
