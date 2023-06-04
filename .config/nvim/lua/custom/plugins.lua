@@ -209,6 +209,10 @@ require('lazy').setup({
     build = ":TSUpdate",
   },
   { 'nvim-treesitter/nvim-treesitter-context' },
+  {
+    "nvim-treesitter/nvim-treesitter-textobjects",
+    dependencies = "nvim-treesitter/nvim-treesitter",
+  },
   { 'folke/trouble.nvim' },
   {
     -- split/join blocks of code
