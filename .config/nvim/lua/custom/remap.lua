@@ -142,7 +142,7 @@ set('n', '<leader>da', vim.diagnostic.setloclist, { desc = "Open diagnostics lis
 set("n", "<leader>dt", "<cmd>TroubleToggle<cr>", { silent = true, noremap = true })
 set("n", "<leader>dw", "<cmd>TroubleToggle workspace_diagnostics<cr>", { silent = true, noremap = true })
 set("n", "<leader>d/", "<cmd>TroubleToggle document_diagnostics<cr>", { silent = true, noremap = true })
-set("n", "<leader>dl", "<cmd>TroubleToggle loclist<cr>", { silent = true, noremap = true })
+set("n", "<leader>ds", "<cmd>TroubleToggle loclist<cr>", { silent = true, noremap = true })
 set("n", "<leader>df", "<cmd>TroubleToggle quickfix<cr>", { silent = true, noremap = true })
 set("n", "dr", "<cmd>TroubleToggle lsp_references<cr>", { silent = true, noremap = true })
 set(
@@ -174,15 +174,16 @@ set({ "n", "o", "x" }, "ge", "<cmd>lua require('spider').motion('ge')<CR>", { de
 
 set({ 'n', 'v' }, '<leader>ao', ':NeoAI<space>', { silent = true, desc = "AI: Open chat" })
 set({ 'n', 'v' }, '<leader>ac', '<cmd>NeoAIClose<CR>', { silent = true, desc = "AI: Close chat" })
-set({ 'v' }, "<leader>ax", ':NeoAIContextOpen<space>""<Left>', { desc = "AI: With context" })
+set({ 'v' }, "<leader>ax", ':NeoAIContextOpen<space>"No description needed, just code. "<Left>',
+  { desc = "AI: With context" })
 set({ 'v' }, "<leader>ac",
-  ':NeoAIContextOpen<space>"Return just the plain text code, then descriptions and clarifications. Edit the code with the instructions: "<Left>',
+  ':NeoAIContextOpen<space>"In the response return just the plain text code without any descriptions and clarifications. Edit the code with the instructions: "<Left>',
   { silent = false, desc = "AI: Change code" })
 set({ 'v' }, "<leader>ae",
   ':NeoAIContextOpen<space>"Explain what this code does please."<CR>',
   { silent = false, desc = "AI: Explain" })
 set({ 'v' }, "<leader>at",
-  ':NeoAIContextOpen<space>"Implement TODO in the code."<CR>',
+  ':NeoAIContextOpen<space>"In the response return just the plain text code without any descriptions and clarifications. Implement TODO in the code."<CR>',
   { silent = false, desc = "AI: TODO" })
 set({ 'v' }, "<leader>ar",
   ':NeoAIContextOpen<space>"Review this chunk of code as a senior software engineer. Look carefully if this code contains logical errors and that it is in line with best practices. The answer should be a list of short abstracts that are worth paying attention to without further explanation."<CR>',

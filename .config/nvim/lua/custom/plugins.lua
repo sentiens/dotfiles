@@ -110,6 +110,11 @@ require('lazy').setup({
           ["@lsp.typemod.modifier.readonly.go"] = { fg = "#d19a66" },
           ["@function.builtin.go"] = { fg = "#dd5ba5" },
           ["@number.go"] = { fg = "#768bf3" },
+          ["@lsp.type.parameter.go"] = { fg = "#ef9062", style = 'bold' },
+          ["@property.go"] = { fg = "#e082a2" },
+          ["@lsp.typemod.function.defaultLibrary.go"] = { fg = "#47b8c9", style = "italic" },
+          ["@constant.builtin.go"] = { fg = "#c678dd", style = "italic" },
+          ["@operator.go"] = { fg = "#c678dd", style = "bold" }
         },
 
         styles = {
@@ -123,7 +128,7 @@ require('lazy').setup({
           functions = "NONE",
           operators = "NONE",
           variables = "NONE",
-          parameters = "bold",
+          parameters = "NONE",
           conditionals = "italic",
           virtual_text = "NONE",
         }
@@ -140,7 +145,7 @@ require('lazy').setup({
     -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',
     config = function()
-      local navic = require('nvim-navic')
+      -- local navic = require('nvim-navic')
       require('lualine').setup {
         options = {
           icons_enabled = true,
@@ -157,14 +162,16 @@ require('lazy').setup({
           lualine_z = {}
         },
         winbar = {
-          lualine_c = { 'filename', {
-            function()
-              return navic.get_location()
-            end,
-            cond = function()
-              return navic.is_available()
-            end
-          } },
+          lualine_c = { 'filename',
+            -- {
+            --   function()
+            --     return navic.get_location()
+            --   end,
+            --   cond = function()
+            --     return navic.is_available()
+            --   end
+            -- }
+          },
 
           lualine_y = { 'progress' },
           lualine_z = { 'location' }

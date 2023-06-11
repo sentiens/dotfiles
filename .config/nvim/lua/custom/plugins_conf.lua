@@ -206,18 +206,27 @@ local on_attach = function(client, bufnr)
   --
   -- In this case, we create a function that lets us more easily define mappings specific
   -- for LSP related items. It sets the mode, buffer and description for us each time.
-  local map = function(keys, func, desc, modes)
+
+  local map = function(keys, func, desc, modes, extra_opts)
     if desc then
       desc = 'LSP: ' .. desc
     end
 
-    vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
+    local opts = { buffer = bufnr, desc = desc }
+    if extra_opts then
+      for k, v in pairs(extra_opts) do
+        opts[k] = v
+      end
+    end
+
+    vim.keymap.set('n', keys, func, opts)
     if modes then
       for _, mode in ipairs(modes) do
-        vim.keymap.set(mode, keys, func, { buffer = bufnr, desc = desc })
+        vim.keymap.set(mode, keys, func, opts)
       end
     end
   end
+
 
   map('<leader>mr', vim.lsp.buf.rename, 'Rename')
   map('<leader>mc', '<cmd>Lspsaga code_action<CR>', 'Code Action')
@@ -261,16 +270,25 @@ local on_attach = function(client, bufnr)
     })
   end
   if client.name == 'gopls' then
+    local semantic = client.config.capabilities.textDocument.semanticTokens
     client.server_capabilities.semanticTokensProvider = {
       full = true,
       legend = {
-        tokenTypes = { 'namespace', 'type', 'interface', 'struct', 'typeParameter', 'parameter',
-          'function', 'method', 'modifier', 'comment',
-          'string', 'number', 'regexp', 'operator', 'decorator' },
-        tokenModifiers = { 'declaration', 'definition', 'readonly', 'static', 'deprecated', 'abstract', 'async',
-          'modification', 'documentation', 'defaultLibrary' }
-      }
+        tokenTypes = semantic.tokenTypes,
+        tokenModifiers = semantic.tokenModifiers,
+      },
+      range = true,
     }
+
+    map('goe', ":GoIfErr<CR>", "Go handle err")
+    map('gor', ":GoGenReturn<CR>", "Go generate return")
+    map('gofs', ":GoFillStruct<CR>", "Go fill struct")
+    map('gofw', ":GoFillSwitch<CR>", "Go fill switch")
+    map('gofp', ":GoFixPlurals<CR>", "Go fill plurals")
+    map('gota', ":GoAddTag<CR>", "Go add tag")
+    map('gotd', ":GoRmTag<CR>", "Go delete tag")
+    map('gotc', ":GoClearTag<CR>", "Go clear tag")
+    map('goi', ":GoImpl<space>", "Go implement interface", { silent = false })
   end
 end
 
@@ -278,13 +296,29 @@ end
 vim.api.nvim_create_autocmd('LspTokenUpdate', {
   callback = function(args)
     local token = args.data.token
-    if token.modifiers.readonly and token.modifiers.defaultLibrary then
+
+    if (token.modifiers.readonly and token.modifiers.defaultLibrary) then
       local trees_info = vim.treesitter.get_captures_at_pos(args.buf, token.line, token.start_col)
 
-      for i, tres_info in ipairs(trees_info) do
+      for _, tres_info in ipairs(trees_info) do
         if tres_info.capture == 'constant.builtin' then
           vim.lsp.semantic_tokens.highlight_token(
             token, args.buf, args.data.client_id, '@constant.builtin.go', {
+              priority = 200,
+            }
+          )
+        end
+      end
+    end
+    if (token.type == "variable") then
+      local trees_info = vim.treesitter.get_captures_at_pos(args.buf, token.line, token.start_col)
+
+      -- print("got varialbe", vim.inspect(token), vim.inspect(trees_info))
+
+      for _, tres_info in ipairs(trees_info) do
+        if tres_info.capture == 'field' or tres_info.capture == 'property' then
+          vim.lsp.semantic_tokens.highlight_token(
+            token, args.buf, args.data.client_id, '@property.go', {
               priority = 200,
             }
           )
@@ -493,6 +527,9 @@ cmp.setup {
       luasnip.lsp_expand(args.body)
     end,
   },
+  experimental = {
+    ghost_text = false,
+  },
   mapping = cmp.mapping.preset.insert {
     ['<C-n>'] = cmp.mapping.select_next_item(),
     ['<C-p>'] = cmp.mapping.select_prev_item(),
@@ -523,7 +560,7 @@ cmp.setup {
     { name = 'luasnip' },
     { name = 'path' },
     { name = "codeium" },
-    { name = 'cmp_tabnine' },
+    -- { name = 'cmp_tabnine' },
     { name = "copilot" },
     { name = 'buffer' },
   },
@@ -533,7 +570,32 @@ local cmp_autopairs = require('nvim-autopairs.completion.cmp')
 local cmp = require('cmp')
 cmp.event:on(
   'confirm_done',
-  cmp_autopairs.on_confirm_done()
+  function(evt)
+    local entry = evt.entry
+    local item = entry:get_completion_item()
+    if item == nil or item.cmp == nil then
+      return
+    end
+
+
+    if item.insertText ~= nil and string.len(item.insertText) > 1 and (item.cmp.kind_text == 'Codeium' or item.cmp.kind_text == 'Copilot') then
+      -- If the last input character is an opening bracket, add the closing bracket
+      local last_char = item.insertText:sub(-1)
+      if last_char == '(' then
+        vim.api.nvim_input(')')
+      elseif last_char == '{' then
+        vim.api.nvim_input('}')
+      elseif last_char == '[' then
+        vim.api.nvim_input(']')
+      end
+      vim.schedule(function()
+        vim.api.nvim_command('normal! i')
+      end)
+      return
+    end
+
+    return cmp_autopairs.on_confirm_done()(evt)
+  end
 )
 
 require("toggleterm").setup {
@@ -566,15 +628,6 @@ require('neoai').setup {
     end,
   },
 }
-
-local format_sync_grp = vim.api.nvim_create_augroup("GoImport", {})
-vim.api.nvim_create_autocmd("BufWritePre", {
-  pattern = "*.go",
-  callback = function()
-    require('go.format').goimport()
-  end,
-  group = format_sync_grp,
-})
 
 vim.diagnostic.config({
   virtual_text = false,

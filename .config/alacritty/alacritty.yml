@@ -23,11 +23,11 @@ scrolling:
 font:
   normal:
     # Font family
-    family: "SauceCodePro Nerd Font"
+    family: "Liga SFMono Nerd Font"
     style: Medium
 
   # Point size
-  size: 14.3
+  size: 15
 
   offset:
     x: 0    # For letter spacing (default: 0).
@@ -39,7 +39,7 @@ font:
     # If the bold family is not specified, it will fall back to the
     # value specified for the normal font.
     # The `style` can be specified to pick a specific face.
-    family: "SauceCodePro Nerd Font"
+    family: "Liga SFMono Nerd Font"
     style: Bold
 
   # Italic font face
@@ -48,8 +48,8 @@ font:
     #
     # If the italic family is not specified, it will fall back to the
     # value specified for the normal font.
-    family: "SauceCodePro Nerd Font"
-    style: Italic
+    family: "Liga SFMono Nerd Font"
+    style: Light Italic
 
   # Bold italic font face
   bold_italic:
@@ -57,7 +57,7 @@ font:
     #
     # If the bold italic family is not specified, it will fall back to the
     # value specified for the normal font.
-    family: "SauceCodePro Nerd Font"
+    family: "Liga SFMono Nerd Font"
     
     # The `style` can be specified to pick a specific face.
     style: Bold Italic
