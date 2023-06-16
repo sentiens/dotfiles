@@ -4,6 +4,7 @@
 !/.config/
 /.config/*
 !/.config/nvim/
+!/.config/gitui/
 !/.config/alacritty/
 !/.config/karabiner/
 /.config/karabiner/*
