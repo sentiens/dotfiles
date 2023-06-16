@@ -193,8 +193,37 @@ require('nvim-treesitter.configs').setup {
     },
 
   },
-
 }
+
+local remove_ansi_escape = function(str)
+  local ansi_escape_pattern = '\27%[%d+;%d*;%d*m'
+  -- Replace all occurrences of the pattern with an empty string
+  str = str:gsub(ansi_escape_pattern, '')
+  str = str:gsub('\27%[[%d;]*%a', '')
+  return str
+end
+
+local handle_job_data = function(data)
+  if not data then
+    return nil
+  end
+  -- Because the nvim.stdout's data will have an extra empty line at end on some OS (e.g. maxOS), we should remove it.
+  for _ = 1, 3, 1 do
+    if data[#data] == '' then
+      table.remove(data, #data)
+    end
+  end
+  if #data < 1 then
+    return nil
+  end
+  -- remove ansi escape code
+  for i, _ in ipairs(data) do
+    data[i] = remove_ansi_escape(data[i])
+  end
+
+  return data
+end
+
 
 local faugroup = vim.api.nvim_create_augroup("LspFormatting", {})
 -- LSP settings.
@@ -258,15 +287,81 @@ local on_attach = function(client, bufnr)
   map('<leader>wl', function()
     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
   end, '[W]orkspace [L]ist Folders')
-
   if client.supports_method("textDocument/formatting") then
+    local function format()
+      if client.name == 'gopls' then
+        if vim.o.mod == true then
+          vim.cmd('write')
+        end
+
+        local current_file_path = vim.api.nvim_buf_get_name(0)
+        local status = { gofumpt = false, reviser = false, golines = false, error_occurred = false }
+        local error_messages = {}
+
+        local function on_job_exit(job_type)
+          return function(_, code, _)
+            if code ~= 0 then
+              return vim.notify('Formatting failed', vim.log.levels.ERROR)
+            end
+            status[job_type] = true
+
+            if status.gofumpt and status.reviser and status.golines then
+              if status.error_occurred then
+                vim.notify(table.concat(error_messages, "\n"), vim.log.levels.ERROR)
+              else
+                vim.notify("Formatted", vim.log.levels.INFO)
+                vim.cmd('edit')
+              end
+            end
+          end
+        end
+
+        local function on_job_stderr(job_type)
+          return function(_, data, _)
+            data = handle_job_data(data)
+            if data and #data > 0 then
+              status.error_occurred = true
+              error_messages[#error_messages + 1] = string.format("%s: %s", job_type, table.concat(data))
+            end
+          end
+        end
+
+        local gofumpt_cmd = string.format("gofumpt -l -w %s", current_file_path)
+        local gofumpt_args = vim.fn.split(gofumpt_cmd, " ")
+        vim.fn.jobstart(gofumpt_args, {
+          on_exit = on_job_exit("gofumpt"),
+          on_stderr = on_job_stderr("gofumpt"),
+          stderr_buffered = true
+        })
+
+        local reviser_cmd = string.format("goimports-reviser -rm-unused -set-alias -format -company-prefixes=pb %s",
+          current_file_path)
+        local reviser_args = vim.fn.split(reviser_cmd, " ")
+        vim.fn.jobstart(reviser_args, {
+          on_exit = on_job_exit("reviser"),
+          on_stderr = on_job_stderr("reviser"),
+          stderr_buffered = true
+        })
+
+        local golines_cmd = string.format("golines -m 130 -w %s", current_file_path)
+        local golines_args = vim.fn.split(golines_cmd, " ")
+        vim.fn.jobstart(golines_args, {
+          on_exit = on_job_exit("golines"),
+          on_stderr = on_job_stderr("golines"),
+          stderr_buffered = true
+        })
+      else
+        vim.lsp.buf.format()
+      end
+    end
+
+
+    map("<leader>mf", format, 'Modify [F]ormat')
     vim.api.nvim_clear_autocmds({ group = faugroup, buffer = bufnr })
     vim.api.nvim_create_autocmd("BufWritePre", {
       group = faugroup,
       buffer = bufnr,
-      callback = function()
-        vim.lsp.buf.format()
-      end,
+      callback = format,
     })
   end
   if client.name == 'gopls' then
@@ -349,18 +444,19 @@ local servers = {
   gopls = {
     gopls = {
       semanticTokens = true,
+      usePlaceholders = true,
       analyses = {
         unusedparams = true,
       },
       staticcheck = true,
       hints = {
-        assignVariableTypes = true,
-        compositeLiteralFields = true,
-        compositeLiteralTypes = true,
+        assignVariableTypes = false,
+        compositeLiteralFields = false,
+        compositeLiteralTypes = false,
         constantValues = true,
-        functionTypeParameters = true,
-        parameterNames = true,
-        rangeVariableTypes = true,
+        functionTypeParameters = false,
+        parameterNames = false,
+        rangeVariableTypes = false,
       },
     }
   },
@@ -633,6 +729,5 @@ vim.diagnostic.config({
   virtual_text = false,
 })
 require("lsp_lines").setup()
-
 
 require("nvim-surround").setup {}

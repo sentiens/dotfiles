@@ -83,9 +83,6 @@ set(
     desc = 'Modify [T]ree',
   }
 )
-set("n", "<leader>mf", vim.lsp.buf.format, {
-  desc = 'Modify [F]ormat',
-})
 
 set('n', '<leader>Sf', '<cmd>lua require("spectre").open()<CR>',
   {
