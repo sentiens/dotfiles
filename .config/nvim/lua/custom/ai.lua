@@ -1,30 +1,20 @@
--- local tabnine = require('cmp_tabnine.config')
--- tabnine:setup({
---   max_lines = 1000,
---   max_num_results = 5,
---   sort = true,
---   run_on_every_keystroke = true,
---   snippet_placeholder = '..',
---   ignored_file_types = {
---     -- default is not to ignore
---     -- uncomment to ignore in lua:
---     -- lua = true
---   },
---   show_prediction_strength = true
--- })
---
--- local prefetch = vim.api.nvim_create_augroup("prefetch", { clear = true })
---
--- vim.api.nvim_create_autocmd('BufRead', {
---   group = prefetch,
---   pattern = '*',
---   callback = function()
---     require('cmp_tabnine'):prefetch(vim.fn.expand('%:p'))
---   end
--- })
+require("codeium").setup {}
 
 require("copilot").setup {
-  suggestion = { enabled = true },
+  suggestions = {
+    enabled = true,
+    auto_trigger = true,
+    debounce = 75,
+    keymap = {
+      accept = "<C-l>",
+      accept_word = false,
+      accept_line = false,
+      next = "<C-]>",
+      prev = "<C-[>",
+      dismiss = "<C-]>",
+    },
+  },
+
   panel = { enabled = true },
   copilot_node_command = 'node',
 }
@@ -35,7 +25,7 @@ require("neoai").setup({
   models = {
     {
       name = "openai",
-      model = "gpt-3.5-turbo",
+      model = "gpt-3.5-turbo-16k",
     },
   },
 })

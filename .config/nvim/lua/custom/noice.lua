@@ -4,11 +4,14 @@
 require("noice").setup {
   lsp = {
     signature = {
-      enabled = true,
+      enabled = false,
+    },
+    hover = {
+      enabled = false,
     },
     documentation = {
       opts = {
-        position = { row = 1, col = "100%" },
+        position = { row = '95%', col = '95%' },
         relative = "editor"
       },
     },

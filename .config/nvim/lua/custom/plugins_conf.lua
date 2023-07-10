@@ -1,3 +1,5 @@
+local debounce = require("custom/debounce")
+
 require("cutlass").setup({
   cut_key = "<C-x>",
   exclude = {
@@ -123,6 +125,15 @@ require('nvim-treesitter.configs').setup {
     },
   },
   textobjects = {
+    swap = {
+      enable = true,
+      swap_next = {
+        ["<leader>ms"] = "@parameter.inner",
+      },
+      swap_previous = {
+        ["<leader>mS"] = "@parameter.inner",
+      },
+    },
     select = {
       enable = true,
 
@@ -258,27 +269,21 @@ local on_attach = function(client, bufnr)
 
 
   map('<leader>mr', vim.lsp.buf.rename, 'Rename')
-  map('<leader>mc', '<cmd>Lspsaga code_action<CR>', 'Code Action')
+  map('<leader>mc', vim.lsp.buf.code_action, 'Code Action')
 
-  map('ga', "<cmd>Lspsaga lsp_finder<CR>", '[G]oto [D]efinition')
-  map('gd', "<cmd>Lspsaga goto_definition<CR>", '[G]oto [D]efinition')
+  map('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
   map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-  map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
   map('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
-  map('gt', "<cmd>Lspsaga goto_type_definition<CR>", '[T]ype [D]efinition')
-  map('gT', "<cmd>Lspsaga peek_type_definition<CR>", '[T]ype [D]efinition')
-  map("gp", "<cmd>Lspsaga peek_definition<CR>", "Peek definition")
+  map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
+  map('gt', vim.lsp.buf.type_definition, '[T]ype [D]efinition')
 
-  map("<leader>o", "<cmd>Lspsaga outline<CR>", "Show outline")
-
-  map("<Leader>gi", "<cmd>Lspsaga incoming_calls<CR>")
-  map("<Leader>go", "<cmd>Lspsaga outgoing_calls<CR>")
-
+  map("<Leader>gi", vim.lsp.buf.incoming_calls)
+  map("<Leader>go", vim.lsp.buf.outgoing_calls)
 
   map('<leader>bs', require('telescope.builtin').lsp_document_symbols, 'Buffer symbols')
   map('<leader>fs', require('telescope.builtin').lsp_dynamic_workspace_symbols, 'Workspace(global) [S]ymbols')
 
-  map('<C-j>', "<cmd>Lspsaga hover_doc ++keep<CR>", 'Hover Documentation', { "v", "i" })
+  map('<C-j>', vim.lsp.buf.hover, 'Hover Documentation', { "v", "i" })
   map('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation', { "v", "i" })
 
   -- Lesser used LSP functionality
@@ -289,74 +294,15 @@ local on_attach = function(client, bufnr)
   end, '[W]orkspace [L]ist Folders')
   if client.supports_method("textDocument/formatting") then
     local function format()
-      if client.name == 'gopls' then
-        if vim.o.mod == true then
-          vim.cmd('write')
-        end
-
-        local current_file_path = vim.api.nvim_buf_get_name(0)
-        local status = { gofumpt = false, reviser = false, golines = false, error_occurred = false }
-        local error_messages = {}
-
-        local function on_job_exit(job_type)
-          return function(_, code, _)
-            if code ~= 0 then
-              return vim.notify('Formatting failed', vim.log.levels.ERROR)
-            end
-            status[job_type] = true
-
-            if status.gofumpt and status.reviser and status.golines then
-              if status.error_occurred then
-                vim.notify(table.concat(error_messages, "\n"), vim.log.levels.ERROR)
-              else
-                vim.notify("Formatted", vim.log.levels.INFO)
-                vim.cmd('edit')
-              end
-            end
-          end
-        end
-
-        local function on_job_stderr(job_type)
-          return function(_, data, _)
-            data = handle_job_data(data)
-            if data and #data > 0 then
-              status.error_occurred = true
-              error_messages[#error_messages + 1] = string.format("%s: %s", job_type, table.concat(data))
-            end
-          end
-        end
-
-        local gofumpt_cmd = string.format("gofumpt -l -w %s", current_file_path)
-        local gofumpt_args = vim.fn.split(gofumpt_cmd, " ")
-        vim.fn.jobstart(gofumpt_args, {
-          on_exit = on_job_exit("gofumpt"),
-          on_stderr = on_job_stderr("gofumpt"),
-          stderr_buffered = true
-        })
-
-        local reviser_cmd = string.format("goimports-reviser -rm-unused -set-alias -format -company-prefixes=pb %s",
-          current_file_path)
-        local reviser_args = vim.fn.split(reviser_cmd, " ")
-        vim.fn.jobstart(reviser_args, {
-          on_exit = on_job_exit("reviser"),
-          on_stderr = on_job_stderr("reviser"),
-          stderr_buffered = true
-        })
-
-        local golines_cmd = string.format("golines -m 130 -w %s", current_file_path)
-        local golines_args = vim.fn.split(golines_cmd, " ")
-        vim.fn.jobstart(golines_args, {
-          on_exit = on_job_exit("golines"),
-          on_stderr = on_job_stderr("golines"),
-          stderr_buffered = true
-        })
-      else
+      if client.name ~= 'gopls' then
         vim.lsp.buf.format()
+        return
       end
+      require("custom/format").format_go(bufnr)
     end
 
-
     map("<leader>mf", format, 'Modify [F]ormat')
+
     vim.api.nvim_clear_autocmds({ group = faugroup, buffer = bufnr })
     vim.api.nvim_create_autocmd("BufWritePre", {
       group = faugroup,
@@ -365,6 +311,23 @@ local on_attach = function(client, bufnr)
     })
   end
   if client.name == 'gopls' then
+    vim.api.nvim_create_autocmd({ "TextYankPost", "InsertLeave" }, {
+      group = faugroup,
+      buffer = bufnr,
+      callback = debounce.throttle_trailing(function()
+        if vim.api.nvim_buf_is_valid(bufnr) and vim.api.nvim_get_current_buf() == bufnr then
+          local ft = vim.api.nvim_buf_get_option(bufnr, 'filetype')
+          if ft == 'go' then
+            vim.cmd("GoImport")
+          else
+            print('Cannot run GoImport on a non-Go file')
+          end
+        else
+          print('Buffer is not valid or current buffer has changed')
+        end
+      end, 250, false),
+    })
+
     local semantic = client.config.capabilities.textDocument.semanticTokens
     client.server_capabilities.semanticTokensProvider = {
       full = true,
@@ -375,7 +338,9 @@ local on_attach = function(client, bufnr)
       range = true,
     }
 
+    map('goI', ":GoImport<CR>", "Go import")
     map('goe', ":GoIfErr<CR>", "Go handle err")
+    map('goc', ":GoCmt<CR>", "Go comment")
     map('gor', ":GoGenReturn<CR>", "Go generate return")
     map('gofs', ":GoFillStruct<CR>", "Go fill struct")
     map('gofw', ":GoFillSwitch<CR>", "Go fill switch")
@@ -442,20 +407,22 @@ local servers = {
   sqlls = {},
 
   gopls = {
+    experimentalPostfixCompletions = true,
     gopls = {
+      completeUnimported = true,
       semanticTokens = true,
-      usePlaceholders = true,
+      usePlaceholders = false,
       analyses = {
         unusedparams = true,
       },
       staticcheck = true,
       hints = {
-        assignVariableTypes = false,
+        assignVariableTypes = true,
         compositeLiteralFields = false,
         compositeLiteralTypes = false,
-        constantValues = true,
-        functionTypeParameters = false,
-        parameterNames = false,
+        constantValues = false,
+        functionTypeParameters = true,
+        parameterNames = true,
         rangeVariableTypes = false,
       },
     }
@@ -467,6 +434,14 @@ local servers = {
       telemetry = { enable = false },
     },
   },
+}
+
+require("go").setup {
+  lsp_gofumpt = true,
+  comment_placeholder = "",
+  lsp_inlay_hints = {
+    enable = true,
+  }
 }
 
 -- Setup neovim lua configuration
@@ -663,7 +638,6 @@ cmp.setup {
 }
 
 local cmp_autopairs = require('nvim-autopairs.completion.cmp')
-local cmp = require('cmp')
 cmp.event:on(
   'confirm_done',
   function(evt)
@@ -677,16 +651,22 @@ cmp.event:on(
     if item.insertText ~= nil and string.len(item.insertText) > 1 and (item.cmp.kind_text == 'Codeium' or item.cmp.kind_text == 'Copilot') then
       -- If the last input character is an opening bracket, add the closing bracket
       local last_char = item.insertText:sub(-1)
+      local fixed = false
       if last_char == '(' then
         vim.api.nvim_input(')')
+        fixed = true
       elseif last_char == '{' then
         vim.api.nvim_input('}')
+        fixed = true
       elseif last_char == '[' then
         vim.api.nvim_input(']')
+        fixed = true
       end
-      vim.schedule(function()
-        vim.api.nvim_command('normal! i')
-      end)
+      if fixed then
+        vim.schedule(function()
+          vim.api.nvim_command('normal! i')
+        end)
+      end
       return
     end
 
@@ -712,8 +692,6 @@ require('hlslens').setup()
 
 require('Comment').setup()
 
-require('hlargs').setup()
-
 require('neoai').setup {
   prompts = {
     context_prompt = function(context)
@@ -728,6 +706,17 @@ require('neoai').setup {
 vim.diagnostic.config({
   virtual_text = false,
 })
-require("lsp_lines").setup()
 
 require("nvim-surround").setup {}
+
+require "lsp_signature".setup {
+  hint_enable = false,
+}
+
+require("illuminate").configure()
+vim.cmd("hi IlluminatedWordRead guibg=#3f363c gui=none")
+vim.cmd("hi IlluminatedWordText guibg=#3f363c gui=none")
+vim.cmd("hi IlluminatedWordWrite guibg=#3f363c gui=none")
+
+vim.cmd("let g:conoline_color_normal_dark = 'guibg=#242830'")
+vim.cmd("let g:conoline_color_insert_dark = 'guibg=#1b3244'")

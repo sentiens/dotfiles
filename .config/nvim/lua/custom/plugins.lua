@@ -110,7 +110,7 @@ require('lazy').setup({
           ["@lsp.typemod.modifier.readonly.go"] = { fg = "#d19a66" },
           ["@function.builtin.go"] = { fg = "#dd5ba5" },
           ["@number.go"] = { fg = "#768bf3" },
-          ["@lsp.type.parameter.go"] = { fg = "#ef9062", style = 'bold' },
+          ["@lsp.type.parameter.go"] = { fg = "#ef9062" },
           ["@property.go"] = { fg = "#e082a2" },
           ["@lsp.typemod.function.defaultLibrary.go"] = { fg = "#47b8c9", style = "italic" },
           ["@constant.builtin.go"] = { fg = "#c678dd", style = "italic" },
@@ -220,7 +220,12 @@ require('lazy').setup({
     "nvim-treesitter/nvim-treesitter-textobjects",
     dependencies = "nvim-treesitter/nvim-treesitter",
   },
-  { 'folke/trouble.nvim' },
+  {
+    'folke/trouble.nvim',
+    opts = {
+      position = 'right',
+    }
+  },
   {
     -- split/join blocks of code
     'Wansmer/treesj',
@@ -374,11 +379,6 @@ require('lazy').setup({
     event = "VeryLazy",
   },
   { 'akinsho/toggleterm.nvim',   version = "*", config = true },
-  {
-    'tzachar/cmp-tabnine',
-    build = './install.sh',
-    dependencies = 'hrsh7th/nvim-cmp',
-  },
   { "zbirenbaum/copilot.lua" },
   { "zbirenbaum/copilot-cmp" },
   { "rmagatti/auto-session" },
@@ -395,7 +395,12 @@ require('lazy').setup({
   {
     "folke/todo-comments.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
-    opts = {}
+    opts = {
+      colors = {
+        info = { "DiagnosticHint", "#2563EB" },
+        hint = { "DiagnosticInfo", "#2563EB" },
+      }
+    }
   },
   { 'numToStr/Comment.nvim', },
   { "drybalka/tree-climber.nvim" },
@@ -409,7 +414,6 @@ require('lazy').setup({
       "theHamsta/nvim-dap-virtual-text",
     },
   },
-  { 'm-demare/hlargs.nvim' },
   {
     "ray-x/go.nvim",
     dependencies = { -- optional packages
@@ -417,32 +421,9 @@ require('lazy').setup({
       "neovim/nvim-lspconfig",
       "nvim-treesitter/nvim-treesitter",
     },
-    config = function()
-      require("go").setup()
-    end,
     event = { "CmdlineEnter" },
     ft = { "go", 'gomod' },
     build = ':lua require("go.install").update_all_sync()' -- if you need to install/update all binaries
-  },
-  {
-    'mvllow/modes.nvim',
-    config = function()
-      require('modes').setup({
-        set_cursorline = true,
-        colors = {
-          copy = "#f5c359",
-          delete = "#c75c6a",
-          insert = "#78ccc5",
-          visual = "#9e47cc",
-        },
-        line_opacity = 0.25,
-      })
-      vim.api.nvim_exec([[
-        highlight CursorLine guibg=#2f343f
-        autocmd InsertEnter * highlight CursorLine guibg=#2f343f
-        autocmd InsertLeave * highlight CursorLine guibg=#2f343f
-      ]], false)
-    end
   },
   {
     "nvim-telescope/telescope-frecency.nvim",
@@ -455,32 +436,18 @@ require('lazy').setup({
       "MunifTanjim/nui.nvim",
     },
   },
-  { "chrisgrieser/nvim-spider",                    lazy = true },
+  { "chrisgrieser/nvim-spider",       lazy = true },
   {
     "jcdickinson/codeium.nvim",
     dependencies = {
       "nvim-lua/plenary.nvim",
       "hrsh7th/nvim-cmp",
     },
-    config = function()
-      require("codeium").setup({
-      })
-    end
   },
   { "gbprod/cutlass.nvim" },
-  { "https://git.sr.ht/~whynothugo/lsp_lines.nvim" },
-  { 'RishabhRD/popfix' },
-  {
-    "glepnir/lspsaga.nvim",
-    event = "LspAttach",
-    config = function()
-      require("lspsaga").setup({})
-    end,
-    dependencies = {
-      { "nvim-tree/nvim-web-devicons" },
-      --Please make sure you install markdown and markdown_inline parser
-      { "nvim-treesitter/nvim-treesitter" }
-    }
-  },
-  { "wsdjeg/vim-fetch" }
+  { "wsdjeg/vim-fetch" },
+  { 'mhartington/formatter.nvim' },
+  { "jose-elias-alvarez/null-ls.nvim" },
+  { "ray-x/lsp_signature.nvim" },
+  { "miyakogi/conoline.vim" }
 }, {})

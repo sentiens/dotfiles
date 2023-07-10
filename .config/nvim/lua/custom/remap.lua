@@ -67,22 +67,13 @@ set('v', '<leader>L', '"zy`]\"zP`[v`]:MoveHBlock(1)<CR>', { noremap = true, sile
 set('n', '<C-q>', ':bd<CR>', { silent = true })
 set('v', 'p', '"_dp', { noremap = true, silent = true })
 
-set('n', '<C-x>', 'V<C-x>', { noremap = false, silent = true, remap = true })
-
 set('n', 'sd', '<Plug>(nvim-surround-delete)')
 set('n', 'sc', "<Plug>(nvim-surround-change)")
 set('n', 'std', '<Plug>(nvim-surround-delete)t')
 
 -- For use default preset and it work with dot
 set('n', '<leader>mt', require('treesj').toggle)
--- For extending default preset with `recursive = true`, but this doesn't work with dot
-set(
-  'n',
-  '<leader>mT',
-  function() require('treesj').toggle({ split = { recursive = true } }) end, {
-    desc = 'Modify [T]ree',
-  }
-)
+set('n', '<leader>mT', require('treesj').split)
 
 set('n', '<leader>Sf', '<cmd>lua require("spectre").open()<CR>',
   {
@@ -126,14 +117,14 @@ set('n', '<leader>fd', require('telescope.builtin').diagnostics, { desc = '[F]fi
 -- open file_browser with the path of the current buffer
 set(
   "n",
-  "<space>fb",
+  "<leader>fb",
   ":Telescope file_browser path=%:p:h select_buffer=true<CR>",
   { noremap = true, desc = "Open [F]ile [B]rowser", }
 )
 
 -- Diagnostic keymaps
-set('n', '<leader>dl', vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic message" })
-set('n', '<leader>dh', vim.diagnostic.goto_next, { desc = "Go to next diagnostic message" })
+set('n', '<leader>dh', vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic message" })
+set('n', '<leader>dl', vim.diagnostic.goto_next, { desc = "Go to next diagnostic message" })
 set('n', '<leader>di', vim.diagnostic.open_float, { desc = "Open floating diagnostic message" })
 set('n', '<leader>da', vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
 set("n", "<leader>dt", "<cmd>TroubleToggle<cr>", { silent = true, noremap = true })
@@ -142,13 +133,6 @@ set("n", "<leader>d/", "<cmd>TroubleToggle document_diagnostics<cr>", { silent =
 set("n", "<leader>ds", "<cmd>TroubleToggle loclist<cr>", { silent = true, noremap = true })
 set("n", "<leader>df", "<cmd>TroubleToggle quickfix<cr>", { silent = true, noremap = true })
 set("n", "dr", "<cmd>TroubleToggle lsp_references<cr>", { silent = true, noremap = true })
-set(
-  "",
-  "<Leader>ds",
-  require("lsp_lines").toggle,
-  { desc = "Toggle lsp_lines" }
-)
-
 
 function _G.set_terminal_keymaps()
   local opts = { buffer = 0 }
@@ -216,6 +200,8 @@ set('n', '<A-s>', require('tree-climber').highlight_node, keyopts)
 set('n', '<leader><space>', require("nvim-navbuddy").open, { desc = "Syntax three navigation" })
 
 set({ 'n', 'v' }, '<leader>ma', '<cmd>TextCaseOpenTelescope<CR>', { desc = "Telescope" })
+set('x', '<leader>mdc', ":<C-u>'<,'>s,\\v(\\s*)//.*,,g<CR>",
+  { noremap = true, silent = true, desc = "Delete comments" })
 
 set('n', '<leader>dec', '<cmd>lua require"dap".continue()<CR>', { desc = "Debug: continue" })
 set('n', '<leader>deo', '<cmd>lua require"dap".step_over()<CR>', { desc = "Debug: Step over" })
